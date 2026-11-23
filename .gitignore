@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment and Secrets (Paystack, Dojah, Database Keys)
+.env
+*.env
+.env.local
+.env.*.local
+backend/.env
+!backend/.env.example
+
+# Build Outputs
+dist/
+*/dist/
+build/
+.vercel/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# System and Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

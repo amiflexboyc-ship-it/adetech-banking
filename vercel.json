@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm --prefix AdeTche-banking run build",
+  "outputDirectory": "AdeTche-banking/dist",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

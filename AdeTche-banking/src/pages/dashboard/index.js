@@ -1,0 +1,9 @@
+export { default as DashboardLayout } from './DashboardLayout';
+export { default as Dashboard } from './Dashboard';
+export { default as DashboardWelcome } from './DashboardWelcome';
+export { default as SendMoney } from './SendMoney';
+export { default as PayBills } from './PayBills';
+export { default as Cards } from './Cards';
+export { default as Transactions } from './Transactions';
+export { default as Profile } from './Profile';
+export { default as Notifications } from './Notifications';
