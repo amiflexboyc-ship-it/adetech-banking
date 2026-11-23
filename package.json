@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm --prefix AdeTche-banking run dev",
-    "build": "npm --prefix AdeTche-banking run build",
+    "build": "node build.js",
     "preview": "npm --prefix AdeTche-banking run preview",
     "backend": "npm --prefix backend run dev",
     "backend:start": "npm --prefix backend start",

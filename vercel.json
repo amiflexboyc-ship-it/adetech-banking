@@ -1,6 +1,5 @@
 {
-  "installCommand": "npm --prefix AdeTche-banking install",
-  "buildCommand": "npm --prefix AdeTche-banking run build",
+  "buildCommand": "node build.js",
   "outputDirectory": "AdeTche-banking/dist",
   "rewrites": [
     {
