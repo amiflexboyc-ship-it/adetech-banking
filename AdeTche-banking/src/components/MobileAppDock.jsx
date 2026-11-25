@@ -17,23 +17,19 @@ function MobileAppDock() {
 
   return (
     <>
-      {/* =========================================================================
-          MOBILE QUICK ACTION BOTTOM SHEET MODAL (APP-LIKE ACTION SHEET)
-         ========================================================================= */}
+
       {quickActionOpen && (
         <div className="md:hidden fixed inset-0 z-50 flex items-end justify-center">
-          {/* Backdrop */}
+
           <div
             className="fixed inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
             onClick={() => setQuickActionOpen(false)}
           />
 
-          {/* Slide-Up Sheet */}
           <div className="relative z-10 w-full max-w-lg bg-[#0a1d36] border-t border-blue-700/60 rounded-t-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300">
-            {/* Sheet Handle */}
+
             <div className="w-12 h-1.5 bg-blue-800 rounded-full mx-auto mb-5" />
 
-            {/* Header */}
             <div className="flex items-center justify-between mb-5">
               <div>
                 <h3 className="font-display font-bold text-lg text-white">AdeTech Quick Actions</h3>
@@ -51,10 +47,8 @@ function MobileAppDock() {
               </button>
             </div>
 
-            {/* Direct React JSX Action Cards (No JSON Arrays) */}
             <div className="grid grid-cols-2 gap-3 mb-4">
 
-              {/* 1. Open Digital Account */}
               <Link
                 to="/register"
                 onClick={() => setQuickActionOpen(false)}
@@ -73,7 +67,6 @@ function MobileAppDock() {
                 </div>
               </Link>
 
-              {/* 2. Instant Money Transfer */}
               <Link
                 to="/dashboard/transfer"
                 onClick={() => setQuickActionOpen(false)}
@@ -90,7 +83,6 @@ function MobileAppDock() {
                 </div>
               </Link>
 
-              {/* 3. Virtual Dollar Cards */}
               <Link
                 to="/dashboard/cards"
                 onClick={() => setQuickActionOpen(false)}
@@ -108,7 +100,6 @@ function MobileAppDock() {
                 </div>
               </Link>
 
-              {/* 4. WhatsApp Support */}
               <a
                 href="https://wa.me/2349077108987?text=Hello%20AdeTech%20Banking"
                 target="_blank"
@@ -129,7 +120,6 @@ function MobileAppDock() {
 
             </div>
 
-            {/* Mobile App Onboarding Link */}
             <Link
               to="/welcome"
               onClick={() => setQuickActionOpen(false)}
@@ -139,7 +129,6 @@ function MobileAppDock() {
               <span>&rarr;</span>
             </Link>
 
-            {/* Direct Phone Hotline */}
             <a
               href="tel:09077108987"
               className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30 transition-all"
@@ -153,16 +142,12 @@ function MobileAppDock() {
         </div>
       )}
 
-      {/* =========================================================================
-          FIXED MOBILE BOTTOM NAVIGATION DOCK (AUTHENTIC MOBILE BANKING APP FEEL)
-         ========================================================================= */}
       <nav
         aria-label="Mobile App Navigation"
         className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#071527]/95 backdrop-blur-2xl border-t border-blue-900/60 pb-safe shadow-[0_-8px_30px_rgba(0,0,0,0.6)]"
       >
         <div className="max-w-md mx-auto px-4 h-16 flex items-center justify-between">
 
-          {/* 1. Home */}
           <button
             type="button"
             onClick={() => handleNavClick('home', '#home')}
@@ -176,7 +161,6 @@ function MobileAppDock() {
             <span className="text-[10px] tracking-tight">Home</span>
           </button>
 
-          {/* 2. Services */}
           <button
             type="button"
             onClick={() => handleNavClick('services', '#services')}
@@ -190,7 +174,6 @@ function MobileAppDock() {
             <span className="text-[10px] tracking-tight">Services</span>
           </button>
 
-          {/* 3. CENTER ELEVATED QUICK ACTION FAB */}
           <div className="flex-1 flex justify-center -mt-6">
             <button
               type="button"
@@ -204,7 +187,6 @@ function MobileAppDock() {
             </button>
           </div>
 
-          {/* 4. Locations */}
           <button
             type="button"
             onClick={() => handleNavClick('map', '#map')}
@@ -219,7 +201,6 @@ function MobileAppDock() {
             <span className="text-[10px] tracking-tight">Locations</span>
           </button>
 
-          {/* 5. Contact */}
           <button
             type="button"
             onClick={() => handleNavClick('contact', '#contact')}
@@ -240,4 +221,3 @@ function MobileAppDock() {
 }
 
 export default MobileAppDock;
-

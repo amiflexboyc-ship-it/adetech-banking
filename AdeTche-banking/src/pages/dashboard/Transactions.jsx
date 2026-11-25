@@ -13,8 +13,7 @@ function Transactions() {
 
   return (
     <div className="space-y-6">
-      
-      {/* Top Header */}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-blue-900/50">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-white">Account Statement & History</h1>
@@ -39,7 +38,6 @@ function Transactions() {
         </div>
       )}
 
-      {/* Filter and Search Controls */}
       <div className="p-4 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="relative w-full md:w-80">
           <svg className="w-4 h-4 absolute left-3.5 top-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,7 +83,6 @@ function Transactions() {
         </div>
       </div>
 
-      {/* Direct React JSX Statement Table */}
       <div className="p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
@@ -100,8 +97,7 @@ function Transactions() {
               </tr>
             </thead>
             <tbody className="divide-y divide-blue-900/30 font-medium">
-              
-              {/* Row 1 */}
+
               {(filterType === 'all' || filterType === 'credit') && (
                 <tr className="hover:bg-blue-950/40 transition-colors">
                   <td className="py-3.5 px-3 font-mono text-cyan-400">ADT-TX-9928172</td>
@@ -120,7 +116,6 @@ function Transactions() {
                 </tr>
               )}
 
-              {/* Row 2 */}
               {(filterType === 'all' || filterType === 'debit') && (
                 <tr className="hover:bg-blue-950/40 transition-colors">
                   <td className="py-3.5 px-3 font-mono text-cyan-400">ADT-TX-8831920</td>
@@ -139,7 +134,6 @@ function Transactions() {
                 </tr>
               )}
 
-              {/* Row 3 */}
               {(filterType === 'all' || filterType === 'debit') && (
                 <tr className="hover:bg-blue-950/40 transition-colors">
                   <td className="py-3.5 px-3 font-mono text-cyan-400">ADT-TX-7719284</td>
@@ -158,7 +152,6 @@ function Transactions() {
                 </tr>
               )}
 
-              {/* Row 4 */}
               {(filterType === 'all' || filterType === 'credit') && (
                 <tr className="hover:bg-blue-950/40 transition-colors">
                   <td className="py-3.5 px-3 font-mono text-cyan-400">ADT-TX-6610291</td>

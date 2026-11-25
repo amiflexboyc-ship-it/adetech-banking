@@ -4,12 +4,10 @@ function Customers() {
   return (
     <section id="customers" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
 
-      {/* Background Subtle Gradient Accents */}
       <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
 
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-500/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
@@ -289,7 +287,6 @@ function Customers() {
           </div>
 
         </div>
-
 
         <div className="rounded-2xl bg-gradient-to-r from-blue-950/60 via-[#0a1d36] to-blue-950/60 border border-blue-800/40 p-6 sm:p-8 shadow-xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">

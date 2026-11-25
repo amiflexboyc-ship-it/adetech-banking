@@ -77,7 +77,6 @@ function PayBills() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
 
-      {/* Top Header */}
       <div className="flex items-center justify-between pb-4 border-b border-blue-900/50">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-white">Utility & Bill Payments</h1>
@@ -91,7 +90,7 @@ function PayBills() {
       </div>
 
       {tokenReceipt ? (
-        /* Token Receipt Card */
+
         <div className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36] border border-cyan-500/50 shadow-2xl space-y-6 animate-in fade-in">
           <div className="text-center space-y-2">
             <div className="w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-500/50 mx-auto flex items-center justify-center text-cyan-400">
@@ -103,7 +102,6 @@ function PayBills() {
             <p className="text-xs text-slate-300">Your recharge was processed and dispatched immediately.</p>
           </div>
 
-          {/* Generated Token Box */}
           <div className="p-4 rounded-2xl bg-[#071527] border border-cyan-500/40 text-center space-y-1">
             <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">Vending Token / PIN</div>
             <div className="font-mono text-lg sm:text-xl font-extrabold text-cyan-400 tracking-widest">
@@ -155,7 +153,7 @@ function PayBills() {
           </div>
         </div>
       ) : (
-        /* Payment Form */
+
         <form onSubmit={handleSubmit} className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-5">
           {errorMessage && (
             <div className="p-3.5 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs">
@@ -163,7 +161,6 @@ function PayBills() {
             </div>
           )}
 
-          {/* Category Tabs (Direct React JSX) */}
           <div className="grid grid-cols-3 gap-2 p-1 rounded-2xl bg-[#071527] border border-blue-900/60">
             <button
               type="button"
@@ -200,7 +197,6 @@ function PayBills() {
             </button>
           </div>
 
-          {/* Biller Select */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-300">Service Provider</label>
             <select
@@ -234,7 +230,6 @@ function PayBills() {
             </select>
           </div>
 
-          {/* Customer Meter/Smartcard Reference */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-300">
               {category === 'electricity' ? 'Prepaid Meter Number' : category === 'airtime' ? 'Phone Number (11 Digits)' : 'Smartcard / IUC Number'}
@@ -249,7 +244,6 @@ function PayBills() {
             />
           </div>
 
-          {/* Amount */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-300">Payment Amount (NGN)</label>
             <div className="relative">

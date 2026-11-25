@@ -9,11 +9,6 @@ import dojahService from '../services/dojahService.js';
 
 const router = express.Router();
 
-/**
- * @route   GET /api/transactions
- * @desc    Get user's transaction history
- * @access  Private
- */
 router.get('/', protect, (req, res) => {
   const transactions = db.getTransactionsByUserId(req.user.id);
   return res.json({
@@ -23,11 +18,6 @@ router.get('/', protect, (req, res) => {
   });
 });
 
-/**
- * @route   GET /api/transactions/supported-banks
- * @desc    Retrieve live supported Nigerian banks directory from Paystack
- * @access  Private
- */
 router.get('/supported-banks', protect, async (req, res) => {
   try {
     const banks = await paystackService.getSupportedBanks();
@@ -45,11 +35,6 @@ router.get('/supported-banks', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/transactions/verify-account
- * @desc    Verify 10-digit NUBAN account name using Real Paystack Resolution or AdeTech Core Ledger
- * @access  Private
- */
 router.post('/verify-account', protect, async (req, res) => {
   try {
     const { accountNumber, recipientBank, bankCode } = req.body;
@@ -64,7 +49,6 @@ router.post('/verify-account', protect, async (req, res) => {
     const cleanAccount = String(accountNumber).trim();
     const cleanBank = String(recipientBank || 'AdeTech Banking').trim();
 
-    // Reject invalid repetitive dummy account numbers (e.g. 0000000000, 1111111111)
     if (/^(\d)\1{9}$/.test(cleanAccount)) {
       return res.status(400).json({
         success: false,
@@ -72,7 +56,6 @@ router.post('/verify-account', protect, async (req, res) => {
       });
     }
 
-    // 1. Check AdeTech Internal Accounts (Core Banking Ledger Lookup)
     if (cleanBank === 'AdeTech Banking' || bankCode === '090') {
       const internalAcc = db.findAccountByNumber(cleanAccount);
       if (!internalAcc) {
@@ -102,7 +85,6 @@ router.post('/verify-account', protect, async (req, res) => {
       });
     }
 
-    // 2. Resolve Destination Bank Code
     const targetCode = bankCode || paystackService.getBankCode(cleanBank) || dojahService.getBankCode(cleanBank);
     if (!targetCode) {
       return res.status(400).json({
@@ -111,7 +93,6 @@ router.post('/verify-account', protect, async (req, res) => {
       });
     }
 
-    // 3. Resolve Account via Paystack or Dojah
     let resolved = null;
     let providerName = 'Paystack Bank Resolution';
 
@@ -120,7 +101,7 @@ router.post('/verify-account', protect, async (req, res) => {
         resolved = await paystackService.resolveAccountNumber(cleanAccount, targetCode);
         providerName = resolved.isTestModeLimit ? 'Paystack Sandbox (Code 001)' : 'Paystack Bank Resolution';
       } catch (paystackErr) {
-        // Fall back to Dojah if configured
+
         if (dojahService.hasCredentials()) {
           const dojahResolved = await dojahService.resolveAccountNumber(cleanAccount, targetCode);
           resolved = dojahResolved;
@@ -183,11 +164,6 @@ router.post('/verify-account', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   GET /api/transactions/pin-status
- * @desc    Check whether customer has configured a transaction PIN
- * @access  Private
- */
 router.get('/pin-status', protect, (req, res) => {
   const user = db.findUserById(req.user.id);
   const hasPin = Boolean(user && user.transactionPin);
@@ -198,11 +174,6 @@ router.get('/pin-status', protect, (req, res) => {
   });
 });
 
-/**
- * @route   POST /api/transactions/set-pin
- * @desc    Set or update 4-digit transaction PIN
- * @access  Private
- */
 router.post('/set-pin', protect, async (req, res) => {
   try {
     const { pin } = req.body;
@@ -232,11 +203,6 @@ router.post('/set-pin', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/transactions/verify-pin
- * @desc    Verify 4-digit transaction PIN
- * @access  Private
- */
 router.post('/verify-pin', protect, async (req, res) => {
   try {
     const { pin } = req.body;
@@ -278,11 +244,6 @@ router.post('/verify-pin', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/transactions/send-otp
- * @desc    Generate & dispatch 6-digit OTP for wire transfer authorization
- * @access  Private
- */
 router.post('/send-otp', protect, async (req, res) => {
   try {
     const { amount, recipientName, recipientBank } = req.body;
@@ -292,7 +253,6 @@ router.post('/send-otp', protect, async (req, res) => {
       return res.status(404).json({ success: false, message: 'Customer account not found.' });
     }
 
-    // Rate Limiting: 45 seconds cooldown between OTP dispatches
     if (user.lastTransferOTPSentAt) {
       const elapsedSeconds = (Date.now() - user.lastTransferOTPSentAt) / 1000;
       if (elapsedSeconds < 45) {
@@ -303,7 +263,6 @@ router.post('/send-otp', protect, async (req, res) => {
       }
     }
 
-    // Generate 6-digit OTP with 10-minute validity
     const { otp, expiresAt } = generateOTPWithExpiry(6, 10);
 
     db.updateUser(user.id, {
@@ -312,7 +271,6 @@ router.post('/send-otp', protect, async (req, res) => {
       lastTransferOTPSentAt: Date.now()
     });
 
-    // Send authorization OTP via Email Service
     await emailService.sendTransferOTP(
       user.email,
       user.name,
@@ -321,7 +279,6 @@ router.post('/send-otp', protect, async (req, res) => {
       recipientName || 'Beneficiary'
     );
 
-    // Mask destination email for customer display
     const maskedEmail = user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3');
 
     return res.json({
@@ -340,11 +297,6 @@ router.post('/send-otp', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/transactions/transfer
- * @desc    Execute verified, PIN & OTP-authorized money transfer
- * @access  Private
- */
 router.post('/transfer', protect, async (req, res) => {
   try {
     const {
@@ -360,7 +312,6 @@ router.post('/transfer', protect, async (req, res) => {
 
     const transferAmount = parseFloat(amount);
 
-    // 1. Validate Input
     if (!recipientAccountNumber || !transferAmount || transferAmount <= 0) {
       return res.status(400).json({
         success: false,
@@ -386,7 +337,6 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
-    // 2. Prevent Duplicate Transactions (Idempotency Key Check)
     if (idempotencyKey) {
       const existingTxn = db.getTransactionsByUserId(req.user.id).find((t) => t.idempotencyKey === idempotencyKey);
       if (existingTxn) {
@@ -399,12 +349,10 @@ router.post('/transfer', protect, async (req, res) => {
       }
     }
 
-    // 3. Calculate Transfer Fee (Zero for AdeTech, ₦10.75 for inter-bank)
     const isInternal = recipientBank === 'AdeTech Banking';
     const transactionFee = isInternal ? 0.00 : 10.75;
     const totalRequired = transferAmount + transactionFee;
 
-    // 4. Validate Sufficient Funds (Balance is NOT reduced on failure)
     if (senderAccount.balance < totalRequired) {
       return res.status(400).json({
         success: false,
@@ -412,7 +360,6 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
-    // 5. Verify 4-Digit Transaction PIN
     if (!pin || !/^\d{4}$/.test(String(pin).trim())) {
       return res.status(400).json({
         success: false,
@@ -436,7 +383,6 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
-    // 6. Verify 6-Digit Transfer OTP
     if (!otp) {
       return res.status(400).json({
         success: false,
@@ -452,14 +398,12 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
-    // 7. Successful Validation: Deduct Total (Amount + Fee) from Sender Balance
     const newSenderBalance = senderAccount.balance - totalRequired;
     db.updateAccountBalance(senderAccount.id, newSenderBalance);
 
     const reference = `ADT-TX-${Date.now().toString().slice(-8)}`;
     const finalBeneficiaryName = recipientName || (isInternal ? 'AdeTech Customer' : 'Verified Beneficiary');
 
-    // 8. If Internal Transfer: Credit Recipient Account
     if (isInternal) {
       const recipientAccount = db.findAccountByNumber(cleanAccount);
       if (recipientAccount) {
@@ -483,7 +427,6 @@ router.post('/transfer', protect, async (req, res) => {
       }
     }
 
-    // 9. Record Confirmed Debit Transaction in DB
     const senderTxn = {
       id: `txn_${Date.now()}_db`,
       userId: user.id,
@@ -506,13 +449,11 @@ router.post('/transfer', protect, async (req, res) => {
 
     db.addTransaction(senderTxn);
 
-    // 10. Clear Used OTP to Prevent Replay Attacks
     db.updateUser(user.id, {
       transferOTP: null,
       transferOTPExpiresAt: null
     });
 
-    // 11. Dispatch Instant Debit Alert Email (Asynchronous)
     emailService.sendTransactionAlert(user.email, user.name, senderTxn).catch((err) => {
       console.error('Error dispatching transaction alert email:', err.message);
     });
@@ -532,11 +473,6 @@ router.post('/transfer', protect, async (req, res) => {
   }
 });
 
-/**
- * @route   POST /api/transactions/pay-bill
- * @desc    Pay utility or bill
- * @access  Private
- */
 router.post('/pay-bill', protect, (req, res) => {
   try {
     const { biller, customerId, amount, billType } = req.body;

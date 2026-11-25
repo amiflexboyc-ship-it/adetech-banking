@@ -20,8 +20,7 @@ function Profile() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      
-      {/* Top Header */}
+
       <div className="pb-4 border-b border-blue-900/50">
         <h1 className="font-display text-2xl font-extrabold text-white">Profile & KYC Verification</h1>
         <p className="text-xs text-slate-300 mt-0.5">Biometric identity verification and regulatory classification.</p>
@@ -33,7 +32,6 @@ function Profile() {
         </div>
       )}
 
-      {/* KYC Status Badges (Direct React JSX) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="p-4 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-md">
           <div className="text-[11px] text-slate-400 mb-1">BVN Status</div>
@@ -60,7 +58,6 @@ function Profile() {
         </div>
       </div>
 
-      {/* Profile Details Form */}
       <form onSubmit={handleUpdate} className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-5 text-xs">
         <h3 className="font-display font-bold text-base text-white">Registered Account Information</h3>
 
@@ -105,7 +102,6 @@ function Profile() {
           </div>
         </div>
 
-        {/* Banking Limits */}
         <div className="pt-4 border-t border-blue-900/40 space-y-3">
           <h4 className="font-display font-bold text-sm text-white">Regulatory Transfer Thresholds</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">

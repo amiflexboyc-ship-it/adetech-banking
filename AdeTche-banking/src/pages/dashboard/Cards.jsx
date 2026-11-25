@@ -67,7 +67,7 @@ function Cards() {
         setStatusMessage('New virtual card generated and activated instantly.');
       }
     } catch (err) {
-      // Fallback local creation
+
       const randomLast4 = Math.floor(1000 + Math.random() * 9000);
       const generated = {
         id: `crd_${Date.now()}`,
@@ -95,8 +95,7 @@ function Cards() {
 
   return (
     <div className="space-y-6">
-      
-      {/* Top Header */}
+
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-blue-900/50">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-white">Cards Command Center</h1>
@@ -129,10 +128,8 @@ function Cards() {
         </div>
       </div>
 
-      {/* Direct React JSX Card Renderings */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        {/* Card 1: Virtual USD Visa */}
+
         <div className="p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-4 flex flex-col justify-between">
           <div className="relative overflow-hidden p-6 rounded-2xl bg-gradient-to-tr from-blue-950 via-blue-900 to-indigo-900 border border-blue-500/40 shadow-2xl text-white">
             <div className="flex items-center justify-between mb-8">
@@ -181,7 +178,6 @@ function Cards() {
           </div>
         </div>
 
-        {/* Card 2: Physical Metal Mastercard */}
         <div className="p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-4 flex flex-col justify-between">
           <div className="relative overflow-hidden p-6 rounded-2xl bg-gradient-to-tr from-slate-950 via-[#0d2545] to-slate-900 border border-slate-700/60 shadow-2xl text-white">
             <div className="flex items-center justify-between mb-8">
@@ -232,7 +228,6 @@ function Cards() {
 
       </div>
 
-      {/* Virtual Card Creation Modal */}
       {showCreateModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-md p-6 rounded-3xl bg-[#0a1d36] border border-blue-800 shadow-2xl space-y-5 animate-in fade-in">

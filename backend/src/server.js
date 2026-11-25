@@ -14,7 +14,6 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Logging & Parsing Middleware
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(
@@ -26,7 +25,6 @@ app.use(
   })
 );
 
-// Root Test Endpoint
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -34,7 +32,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// System Health Endpoint
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
@@ -45,7 +42,6 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Primary Banking API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
@@ -53,7 +49,6 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/dojah', dojahRoutes);
 
-// 404 Fallback Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -61,7 +56,6 @@ app.use((req, res) => {
   });
 });
 
-// Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Unhandled Application Error:', err);
   res.status(err.status || 500).json({
@@ -70,7 +64,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server on 0.0.0.0
 app.listen(PORT, '0.0.0.0', () => {
   console.log('====================================================');
   console.log(' AdeTech Digital Banking Backend API Server Running ');

@@ -14,14 +14,14 @@ function DashboardLayout() {
   });
 
   useEffect(() => {
-    // Attempt to load live user details
+
     const stored = localStorage.getItem('adetech_user');
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
         setUser((prev) => ({ ...prev, ...parsed }));
       } catch (e) {
-        // use fallback
+
       }
     }
 
@@ -36,7 +36,7 @@ function DashboardLayout() {
         }
       })
       .catch(() => {
-        // local state fallback
+
       });
   }, []);
 
@@ -54,11 +54,9 @@ function DashboardLayout() {
 
   return (
     <div className="min-h-screen bg-[#071527] text-white flex flex-col md:flex-row selection:bg-blue-600 selection:text-white">
-      
-      {/* Desktop Navigation Sidebar (Navy 900 Brand Vault) */}
+
       <aside className="hidden md:flex flex-col w-64 bg-[#0a1d36] border-r border-blue-900/50 flex-shrink-0">
-        
-        {/* Brand Header */}
+
         <div className="p-6 border-b border-blue-900/50">
           <Link to="/" className="flex items-center gap-3 select-none">
             <div className="relative w-9 h-9 flex-shrink-0">
@@ -101,7 +99,6 @@ function DashboardLayout() {
           </div>
         </div>
 
-        {/* Sidebar Navigation Links (Direct React JSX) */}
         <nav className="flex-1 p-4 space-y-1.5 overflow-y-auto">
           <NavLink to="/dashboard/overview" className={getNavLinkClass}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -147,7 +144,6 @@ function DashboardLayout() {
           </NavLink>
         </nav>
 
-        {/* Logout */}
         <div className="p-4 border-t border-blue-900/50">
           <button
             type="button"
@@ -162,10 +158,8 @@ function DashboardLayout() {
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-w-0">
-        
-        {/* Top Header */}
+
         <header className="sticky top-0 z-30 bg-[#0a1d36]/90 backdrop-blur-md border-b border-blue-900/50 px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/" className="md:hidden flex items-center gap-2">
@@ -201,13 +195,11 @@ function DashboardLayout() {
           </div>
         </header>
 
-        {/* View Content */}
         <main className="flex-1 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8">
           <Outlet context={{ user, setUser }} />
         </main>
       </div>
 
-      {/* Mobile App Bottom Navigation Bar */}
       <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[#0a1d36]/95 backdrop-blur-lg border-t border-blue-900/60 px-2 py-2 flex items-center justify-around">
         <NavLink to="/dashboard/overview" className={({ isActive }) => `flex flex-col items-center gap-1 p-1 text-[10px] font-bold ${isActive ? 'text-blue-400' : 'text-slate-400'}`}>
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

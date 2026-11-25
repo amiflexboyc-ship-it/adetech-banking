@@ -1,23 +1,7 @@
 import dojahService from '../services/dojahService.js';
 
-/**
- * Dojah Controller for Real Nigerian KYC & Financial Verification
- * 
- * Handles bank account name resolution, bank list lookups, BVN, NIN,
- * and phone number verification using the Dojah API.
- * 
- * Strict Banking Standards:
- * - Real API integration only; no simulated or fake account names.
- * - Enforces 10-digit NUBAN account number format.
- * - Enforces 11-digit BVN and NIN standards.
- * - Comprehensive HTTP status code mappings.
- */
 export const dojahController = {
-  /**
-   * @desc    Check Dojah integration configuration status
-   * @route   GET /api/dojah/status
-   * @access  Private
-   */
+
   getStatus: (req, res) => {
     return res.json({
       success: true,
@@ -34,11 +18,6 @@ export const dojahController = {
     });
   },
 
-  /**
-   * @desc    Retrieve Nigerian banks supported by Dojah
-   * @route   GET /api/dojah/banks
-   * @access  Private
-   */
   getBanks: async (req, res) => {
     try {
       const banks = await dojahService.getSupportedBanks();
@@ -55,15 +34,9 @@ export const dojahController = {
     }
   },
 
-  /**
-   * @desc    Resolve 10-digit NUBAN Nigerian Bank Account Name
-   * @route   GET /api/dojah/resolve/account
-   * @route   POST /api/dojah/resolve/account
-   * @access  Private
-   */
   resolveAccount: async (req, res) => {
     try {
-      // Accept parameters from either query string or request body
+
       const accountNumber = req.query.account_number || req.query.accountNumber || req.body.account_number || req.body.accountNumber;
       let bankCode = req.query.bank_code || req.query.bankCode || req.body.bank_code || req.body.bankCode;
       const bankName = req.query.bank_name || req.query.bankName || req.query.recipientBank || req.body.bank_name || req.body.bankName || req.body.recipientBank;
@@ -83,7 +56,6 @@ export const dojahController = {
         });
       }
 
-      // If bankCode not explicitly passed, try to resolve from bank name
       if (!bankCode && bankName) {
         bankCode = dojahService.getBankCode(bankName);
       }
@@ -115,12 +87,6 @@ export const dojahController = {
     }
   },
 
-  /**
-   * @desc    Verify BVN (Bank Verification Number) via Dojah KYC API
-   * @route   GET /api/dojah/bvn
-   * @route   POST /api/dojah/bvn
-   * @access  Private
-   */
   verifyBVN: async (req, res) => {
     try {
       const bvn = req.query.bvn || req.body.bvn;
@@ -157,12 +123,6 @@ export const dojahController = {
     }
   },
 
-  /**
-   * @desc    Verify NIN (National Identity Number) via Dojah KYC API
-   * @route   GET /api/dojah/nin
-   * @route   POST /api/dojah/nin
-   * @access  Private
-   */
   verifyNIN: async (req, res) => {
     try {
       const nin = req.query.nin || req.body.nin;
@@ -199,12 +159,6 @@ export const dojahController = {
     }
   },
 
-  /**
-   * @desc    Verify Nigerian Phone Number via Dojah KYC API
-   * @route   GET /api/dojah/phone
-   * @route   POST /api/dojah/phone
-   * @access  Private
-   */
   verifyPhone: async (req, res) => {
     try {
       const phone = req.query.phone || req.query.phone_number || req.body.phone || req.body.phone_number;
@@ -233,11 +187,6 @@ export const dojahController = {
     }
   },
 
-  /**
-   * @desc    Lookup official CBN bank code by bank name
-   * @route   GET /api/dojah/bank-code
-   * @access  Private
-   */
   lookupBankCode: (req, res) => {
     const bankName = req.query.bank_name || req.query.name || req.query.bank;
 

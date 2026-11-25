@@ -7,13 +7,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_FILE = path.join(__dirname, '..', '..', 'data', 'store.json');
 
-// Ensure data folder exists
 const dataDir = path.join(__dirname, '..', '..', 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// Default initial state with demo user and transactions
 const getInitialData = () => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync('AdeTech@2026', salt);
@@ -172,7 +170,6 @@ class Database {
     }
   }
 
-  // Users
   findUserByEmail(email) {
     return this.data.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
   }
@@ -196,7 +193,6 @@ class Database {
     return user;
   }
 
-  // Accounts
   findAccountByUserId(userId) {
     return this.data.accounts.find((a) => a.userId === userId);
   }
@@ -221,7 +217,6 @@ class Database {
     return account;
   }
 
-  // Cards
   getCardsByUserId(userId) {
     return this.data.cards.filter((c) => c.userId === userId);
   }
@@ -232,7 +227,6 @@ class Database {
     return card;
   }
 
-  // Transactions
   getTransactionsByUserId(userId) {
     return this.data.transactions
       .filter((t) => t.userId === userId)
@@ -245,7 +239,6 @@ class Database {
     return txn;
   }
 
-  // Notifications
   getNotificationsByUserId(userId) {
     return this.data.notifications.filter((n) => n.userId === userId);
   }
@@ -257,14 +250,12 @@ class Database {
     this.save();
   }
 
-  // Contact Inquiries
   addInquiry(inquiry) {
     this.data.inquiries.unshift(inquiry);
     this.save();
     return inquiry;
   }
 
-  // Admin Methods
   getAllUsers() {
     return this.data.users.map((u) => {
       const { password, ...safeUser } = u;

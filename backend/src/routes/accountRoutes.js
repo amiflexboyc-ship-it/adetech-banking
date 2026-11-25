@@ -4,11 +4,6 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-/**
- * @route   GET /api/account/details
- * @desc    Get account balance and details
- * @access  Private
- */
 router.get('/details', protect, (req, res) => {
   const account = db.findAccountByUserId(req.user.id);
   if (!account) {
@@ -24,11 +19,6 @@ router.get('/details', protect, (req, res) => {
   });
 });
 
-/**
- * @route   GET /api/account/cards
- * @desc    Get user's virtual and physical cards
- * @access  Private
- */
 router.get('/cards', protect, (req, res) => {
   const cards = db.getCardsByUserId(req.user.id);
   return res.json({
@@ -37,11 +27,6 @@ router.get('/cards', protect, (req, res) => {
   });
 });
 
-/**
- * @route   POST /api/account/cards/create
- * @desc    Generate an instant virtual card
- * @access  Private
- */
 router.post('/cards/create', protect, (req, res) => {
   try {
     const { currency = 'USD', brand = 'Visa', spendingLimit = 1000 } = req.body;
@@ -63,7 +48,6 @@ router.post('/cards/create', protect, (req, res) => {
 
     db.addCard(newCard);
 
-    // Create card creation notification
     db.addTransaction({
       id: `txn_${Date.now()}`,
       userId: req.user.id,

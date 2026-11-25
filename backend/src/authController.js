@@ -4,9 +4,6 @@ import db from './config/db.js';
 import { generateOTPWithExpiry, verifyOTP } from './utils/generateOTP.js';
 import emailService from './services/emailService.js';
 
-/**
- * Generate Secure JWT Token for Session Management
- */
 const generateToken = (userId) => {
   return jwt.sign(
     { id: userId },
@@ -15,23 +12,13 @@ const generateToken = (userId) => {
   );
 };
 
-/**
- * Generate 10-digit Nigerian NUBAN Account Number starting with '09'
- */
 const generateAccountNumber = () => {
   const randomPart = Math.floor(10000000 + Math.random() * 90000000);
   return `09${randomPart.toString().slice(0, 8)}`;
 };
 
-/**
- * AdeTech Digital Banking Authentication Controller
- */
 export const authController = {
-  /**
-   * @desc    Register new customer account, provision NUBAN, and dispatch verification OTP
-   * @route   POST /api/auth/register
-   * @access  Public
-   */
+
   register: async (req, res) => {
     try {
       const { name, email, phone, password } = req.body;
@@ -59,11 +46,9 @@ export const authController = {
         });
       }
 
-      // Hash password using strong salt rounds
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      // Generate secure 6-digit verification OTP (valid for 10 minutes)
       const { otp, expiresAt } = generateOTPWithExpiry(6, 10);
 
       const userId = `usr_${Date.now()}`;
@@ -77,7 +62,7 @@ export const authController = {
         emailVerified: false,
         verificationOTP: otp,
         otpExpiresAt: expiresAt.toISOString(),
-        transactionPin: null, // Configurable for transfers
+        transactionPin: null,
         bvnVerified: false,
         ninVerified: false,
         createdAt: new Date().toISOString()
@@ -85,7 +70,6 @@ export const authController = {
 
       db.addUser(newUser);
 
-      // Auto-provision primary NUBAN checking account with ₦10,000 welcome credit grant
       const newAccount = {
         id: `acc_${Date.now()}`,
         userId: newUser.id,
@@ -99,7 +83,6 @@ export const authController = {
 
       db.addAccount(newAccount);
 
-      // Record welcome bonus transaction on ledger
       db.addTransaction({
         id: `txn_${Date.now()}`,
         userId: newUser.id,
@@ -114,7 +97,6 @@ export const authController = {
         description: 'New Account Welcome Credit'
       });
 
-      // Dispatch 6-digit OTP code to registered email
       emailService.sendVerificationOTP(newUser.email, newUser.name, otp).catch((err) => {
         console.error('[Auth Controller] Error dispatching verification email:', err.message);
       });
@@ -138,11 +120,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Verify customer email using 6-digit OTP
-   * @route   POST /api/auth/verify-email
-   * @access  Public
-   */
   verifyEmail: async (req, res) => {
     try {
       const { email, otp } = req.body;
@@ -177,7 +154,6 @@ export const authController = {
         });
       }
 
-      // Mark user verified and wipe temporary OTP state
       db.updateUser(user.id, {
         emailVerified: true,
         verificationOTP: null,
@@ -186,7 +162,6 @@ export const authController = {
 
       const account = db.findAccountByUserId(user.id);
 
-      // Send official onboarding welcome email
       emailService.sendWelcomeEmail(user.email, user.name, account?.accountNumber).catch((err) => {
         console.error('[Auth Controller] Error dispatching welcome email:', err.message);
       });
@@ -204,11 +179,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Resend 6-digit verification OTP code to user's email
-   * @route   POST /api/auth/resend-otp
-   * @access  Public
-   */
   resendVerificationOTP: async (req, res) => {
     try {
       const { email } = req.body;
@@ -235,14 +205,12 @@ export const authController = {
         });
       }
 
-      // Generate fresh OTP
       const { otp, expiresAt } = generateOTPWithExpiry(6, 10);
       db.updateUser(user.id, {
         verificationOTP: otp,
         otpExpiresAt: expiresAt.toISOString()
       });
 
-      // Dispatch via email service
       await emailService.sendVerificationOTP(user.email, user.name, otp);
 
       return res.json({
@@ -258,11 +226,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Authenticate user credentials & issue JWT session token
-   * @route   POST /api/auth/login
-   * @access  Public
-   */
   login: async (req, res) => {
     try {
       const { email, password } = req.body;
@@ -310,11 +273,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Initiate password reset flow & dispatch reset OTP
-   * @route   POST /api/auth/forgot-password
-   * @access  Public
-   */
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
@@ -327,8 +285,7 @@ export const authController = {
       }
 
       const user = db.findUserByEmail(email.trim().toLowerCase());
-      
-      // Defend against user enumeration by returning standard positive response
+
       if (!user) {
         return res.json({
           success: true,
@@ -357,11 +314,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Verify reset OTP and configure new password
-   * @route   POST /api/auth/reset-password
-   * @access  Public
-   */
   resetPassword: async (req, res) => {
     try {
       const { email, otp, newPassword } = req.body;
@@ -418,11 +370,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Change password for currently authenticated customer
-   * @route   POST /api/auth/change-password
-   * @access  Private
-   */
   changePassword: async (req, res) => {
     try {
       const { currentPassword, newPassword } = req.body;
@@ -475,11 +422,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Configure or update 4-digit transaction transfer PIN
-   * @route   POST /api/auth/pin
-   * @access  Private
-   */
   setTransactionPin: async (req, res) => {
     try {
       const { pin } = req.body;
@@ -509,11 +451,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Get currently authenticated user details & banking overview
-   * @route   GET /api/auth/me
-   * @access  Private
-   */
   getMe: (req, res) => {
     try {
       const account = db.findAccountByUserId(req.user.id);
@@ -534,11 +471,6 @@ export const authController = {
     }
   },
 
-  /**
-   * @desc    Terminate session
-   * @route   POST /api/auth/logout
-   * @access  Private
-   */
   logout: (req, res) => {
     return res.json({
       success: true,

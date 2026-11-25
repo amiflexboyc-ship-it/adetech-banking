@@ -11,18 +11,14 @@ function Footer() {
   return (
     <footer className="relative bg-[#040d1a] text-slate-300 border-t border-blue-900/40 overflow-hidden">
 
-      {/* Subtle Background Lighting Accent */}
       <div className="absolute top-0 left-1/4 -translate-x-1/2 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Main Footer Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 pb-12 border-b border-blue-950">
 
-          {/* Col 1: Brand Info & Direct Contacts (lg:col-span-4) */}
           <div className="lg:col-span-4 flex flex-col">
-            
-            {/* Logo */}
+
             <div className="flex items-center gap-3 cursor-pointer select-none mb-4" onClick={scrollToTop}>
               <div className="relative w-10 h-10 flex-shrink-0">
                 <svg viewBox="0 0 48 48" fill="none" className="w-full h-full drop-shadow-[0_4px_12px_rgba(37,99,235,0.45)]">
@@ -61,7 +57,6 @@ function Footer() {
               </div>
             </div>
 
-            {/* Slogan & Description */}
             <div className="text-sm font-semibold text-cyan-400 mb-3 tracking-wide">
               Your Money, Your Control, Your Future.
             </div>
@@ -70,10 +65,8 @@ function Footer() {
               AdeTech Banking provides secure, convenient, and modern digital banking infrastructure designed around your everyday personal and business financial needs.
             </p>
 
-            {/* Direct Contact Links */}
             <div className="space-y-2.5">
-              
-              {/* WhatsApp */}
+
               <a
                 href="https://wa.me/2349077108987"
                 target="_blank"
@@ -91,7 +84,6 @@ function Footer() {
                 </div>
               </a>
 
-              {/* Email */}
               <a
                 href="mailto:amiflexboyc@gmail.com"
                 className="flex items-center gap-3 p-2.5 rounded-xl bg-[#0a1d36]/80 hover:bg-[#0d2545] border border-blue-900/50 hover:border-blue-500/50 text-xs text-slate-200 hover:text-white transition-colors group"
@@ -107,7 +99,6 @@ function Footer() {
                 </div>
               </a>
 
-              {/* Head Office Address */}
               <div className="flex items-center gap-3 p-2.5 rounded-xl bg-[#0a1d36]/50 border border-blue-950 text-xs text-slate-300">
                 <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -124,7 +115,6 @@ function Footer() {
             </div>
           </div>
 
-          {/* Col 2: Navigation Links (lg:col-span-2) */}
           <div className="lg:col-span-2 flex flex-col">
             <h4 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 rounded-sm"></span>
@@ -158,7 +148,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Col 3: Banking Solutions (lg:col-span-3) */}
           <div className="lg:col-span-3 flex flex-col">
             <h4 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-2 h-2 bg-cyan-400 rounded-sm"></span>
@@ -189,7 +178,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Col 4: Trust & Compliance Badges (lg:col-span-3) */}
           <div className="lg:col-span-3 flex flex-col">
             <h4 className="font-display font-bold text-sm text-white uppercase tracking-wider mb-5 flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-400 rounded-sm"></span>
@@ -197,8 +185,7 @@ function Footer() {
             </h4>
 
             <div className="space-y-3">
-              
-              {/* CBN Badge */}
+
               <div className="p-3 rounded-xl bg-[#0a1d36]/80 border border-blue-900/60 flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +198,6 @@ function Footer() {
                 </div>
               </div>
 
-              {/* NDIC Deposit Insurance */}
               <div className="p-3 rounded-xl bg-[#0a1d36]/80 border border-blue-900/60 flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 flex-shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -225,7 +211,6 @@ function Footer() {
                 </div>
               </div>
 
-              {/* Encryption & Standards */}
               <div className="p-3 rounded-xl bg-[#0a1d36]/80 border border-blue-900/60 flex items-start gap-3">
                 <div className="w-8 h-8 rounded-lg bg-cyan-600/20 border border-cyan-500/30 flex items-center justify-center text-cyan-400 flex-shrink-0">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -243,14 +228,12 @@ function Footer() {
 
         </div>
 
-        {/* Regulatory Disclosure Statement */}
         <div className="py-6 border-b border-blue-950 text-xs text-slate-400 leading-relaxed font-normal">
           <p>
             AdeTech Banking Corporation operates as a modern digital financial technology institution. Banking and payment processing services are provided in full accordance with regulatory standards approved by the Central Bank of Nigeria (CBN). Customer funds deposited in AdeTech accounts are insured by the Nigeria Deposit Insurance Corporation (NDIC). Virtual payment cards and international settlements are powered in partnership with authorized global card payment schemes.
           </p>
         </div>
 
-        {/* Bottom Bar: Copyright & Back to Top (with padding for mobile app dock) */}
         <div className="pt-6 pb-20 md:pb-0 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div className="flex items-center gap-2">
             <span>&copy; {new Date().getFullYear()} AdeTech Banking Corporation. All rights reserved.</span>
@@ -261,7 +244,6 @@ function Footer() {
             <a href="#terms" className="hover:text-blue-400 transition-colors">Terms of Service</a>
             <a href="#security" className="hover:text-blue-400 transition-colors">Security Architecture</a>
 
-            {/* Back to Top Button */}
             <button
               type="button"
               onClick={scrollToTop}
@@ -282,4 +264,3 @@ function Footer() {
 }
 
 export default Footer;
-

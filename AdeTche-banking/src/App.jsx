@@ -12,7 +12,6 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import MobileAppDock from './components/MobileAppDock';
 
-// Auth Pages
 import Register from './pages/auth/Register';
 import VerifyEmail from './pages/auth/VerifyEmail';
 import Login from './pages/auth/Login';
@@ -20,7 +19,6 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
 import WelcomeDashboard from './welcome/WelcomeDashboard';
 
-// Customer Banking Portal Pages
 import {
   DashboardLayout,
   Dashboard as CustomerDashboard,
@@ -32,7 +30,6 @@ import {
   Notifications as CustomerNotifications
 } from './pages/dashboard';
 
-// Protected Route Wrapper
 import ProtectedRoute from './components/ProtectedRoute';
 
 function HomePage() {
@@ -59,21 +56,18 @@ function HomePage() {
 function App() {
   return (
     <Routes>
-      {/* Main Public Website */}
+
       <Route path="/" element={<HomePage />} />
 
-      {/* Authentication Pages */}
       <Route path="/register" element={<Register />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/login" element={<Login />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      {/* Mobile Welcome & Onboarding Showcase */}
       <Route path="/welcome" element={<WelcomeDashboard />} />
       <Route path="/onboarding" element={<WelcomeDashboard />} />
 
-      {/* Dashboard Welcome — full screen, no sidebar, protected */}
       <Route
         path="/dashboard"
         element={
@@ -83,7 +77,6 @@ function App() {
         }
       />
 
-      {/* Customer Banking Portal (Protected) — sidebar layout for all inner pages */}
       <Route
         path="/dashboard"
         element={

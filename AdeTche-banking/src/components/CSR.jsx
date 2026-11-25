@@ -170,13 +170,11 @@ function CSR() {
   return (
     <section id="crs" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
 
-      {/* Background Decorative Glow Accents */}
       <div className="absolute top-10 left-1/3 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
             CORPORATE RESPONSIBILITY & SUSTAINABILITY (CRS)
@@ -227,7 +225,7 @@ function CSR() {
               </h3>
 
               <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
-                Our flag flies proudly at every branch, data hub, and commercial center across Nigeria. Rendered in signature <strong>AdeTech Navy Blue (#071527)</strong>, the colors represent unshakeable security, institutional stability, and our enduring pledge to build lasting wealth for every Nigerian citizen.
+                Our flag flies proudly at every branch, data hub, and commercial center across Nigeria. Rendered in signature <strong className='text-blue-500'>AdeTech Navy Blue</strong>, the colors represent unshakeable security, institutional stability, and our enduring pledge to build lasting wealth for every Nigerian citizen.
               </p>
 
               <div className="grid grid-cols-2 gap-4 pt-2 border-t border-blue-900/50">
@@ -245,16 +243,14 @@ function CSR() {
           </div>
         </div>
 
-      
         <div className="flex flex-wrap items-center justify-center gap-2 mb-14 p-2 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 backdrop-blur-md max-w-4xl mx-auto shadow-xl">
           <button
             type="button"
             onClick={() => setActiveTab('all')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'all'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'all'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             All CRS Pillars
           </button>
@@ -262,11 +258,10 @@ function CSR() {
           <button
             type="button"
             onClick={() => setActiveTab('social-investments')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'social-investments'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'social-investments'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             Social Investments
           </button>
@@ -274,11 +269,10 @@ function CSR() {
           <button
             type="button"
             onClick={() => setActiveTab('sustainability')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'sustainability'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'sustainability'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             Sustainability & ESG
           </button>
@@ -286,11 +280,10 @@ function CSR() {
           <button
             type="button"
             onClick={() => setActiveTab('stakeholders')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'stakeholders'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'stakeholders'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             Stakeholders
           </button>
@@ -298,11 +291,10 @@ function CSR() {
           <button
             type="button"
             onClick={() => setActiveTab('partnerships')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'partnerships'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'partnerships'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             Partnerships
           </button>
@@ -310,17 +302,15 @@ function CSR() {
           <button
             type="button"
             onClick={() => setActiveTab('sustainability-reporting')}
-            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-              activeTab === 'sustainability-reporting'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
-                : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
-            }`}
+            className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${activeTab === 'sustainability-reporting'
+              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/40'
+              : 'text-slate-300 hover:text-white hover:bg-blue-950/50'
+              }`}
           >
             Reporting
           </button>
         </div>
 
-       
         <div className="space-y-16">
           {filteredPillars.map((pillar, idx) => (
             <div

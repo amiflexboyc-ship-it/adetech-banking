@@ -29,7 +29,6 @@ export const protect = (req, res, next) => {
       });
     }
 
-    // Attach safe user object without password
     const { password, ...safeUser } = user;
     req.user = safeUser;
     next();

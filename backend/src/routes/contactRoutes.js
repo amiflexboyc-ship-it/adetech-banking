@@ -3,11 +3,6 @@ import db from '../config/db.js';
 
 const router = express.Router();
 
-/**
- * @route   POST /api/contact
- * @desc    Submit inquiry from website contact form
- * @access  Public
- */
 router.post('/', (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body;

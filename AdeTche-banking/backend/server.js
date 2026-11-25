@@ -9,7 +9,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Home API
 app.get("/", (req, res) => {
     res.json({
         success: true,
@@ -17,7 +16,6 @@ app.get("/", (req, res) => {
     });
 });
 
-// Test API
 app.get("/api/test", (req, res) => {
     res.json({
         success: true,

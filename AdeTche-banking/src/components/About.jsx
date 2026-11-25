@@ -3,14 +3,12 @@ import React from 'react';
 function About() {
   return (
     <section id="about" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
-      
-      {/* Background Subtle Gradient Accents */}
+
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Top Header */}
+
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-500/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
             ABOUT US
@@ -34,9 +32,6 @@ function About() {
           </div>
         </div>
 
-        {/* =========================================================================
-            WHAT WE OFFER (8 KEY PILLARS)
-           ========================================================================= */}
         <div className="mb-20">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-1.5 h-7 bg-blue-500 rounded-full" />
@@ -46,8 +41,7 @@ function About() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            {/* 1. Secure Account Registration */}
+
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +54,6 @@ function About() {
               </p>
             </div>
 
-            {/* 2. Smart Money Transfers */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -73,7 +66,6 @@ function About() {
               </p>
             </div>
 
-            {/* 3. Transaction History */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,7 +78,6 @@ function About() {
               </p>
             </div>
 
-            {/* 4. Virtual Cards */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +91,6 @@ function About() {
               </p>
             </div>
 
-            {/* 5. Bill Payments */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +103,6 @@ function About() {
               </p>
             </div>
 
-            {/* 6. Savings Management */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,7 +115,6 @@ function About() {
               </p>
             </div>
 
-            {/* 7. Real-Time Notifications */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,7 +127,6 @@ function About() {
               </p>
             </div>
 
-            {/* 8. Personal Dashboard */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-lg shadow-black/20 group">
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 mb-4 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,12 +142,8 @@ function About() {
           </div>
         </div>
 
-        {/* =========================================================================
-            OUR VISION & OUR PROMISE
-           ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          
-          {/* Our Vision Card */}
+
           <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0a1d36] to-[#0d2545] border border-blue-500/40 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="flex items-center gap-3 mb-4">
@@ -177,7 +160,6 @@ function About() {
             </p>
           </div>
 
-          {/* Our Promise Card */}
           <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#0a1d36] to-[#0d2545] border border-blue-500/40 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
             <div className="flex items-center gap-3 mb-4">
@@ -195,9 +177,6 @@ function About() {
 
         </div>
 
-        {/* =========================================================================
-            CLOSING BRAND BANNER
-           ========================================================================= */}
         <div className="p-8 sm:p-10 rounded-2xl bg-gradient-to-r from-blue-900/60 via-[#0a1d36] to-blue-950/70 border border-blue-400/40 text-center shadow-2xl backdrop-blur-md">
           <p className="font-display text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
             AdeTech Digital Banking — Your Money, Your Control, Your Future.
@@ -210,5 +189,3 @@ function About() {
 }
 
 export default About;
-
-

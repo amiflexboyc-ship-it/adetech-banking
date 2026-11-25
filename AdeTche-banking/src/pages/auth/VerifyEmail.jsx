@@ -13,7 +13,6 @@ function VerifyEmail() {
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Countdown timer for code resend
   useEffect(() => {
     if (timer > 0) {
       const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -31,7 +30,6 @@ function VerifyEmail() {
     updated[index] = value;
     setOtp(updated);
 
-    // Auto-advance to next input box
     if (value && index < 5) {
       const nextInput = document.getElementById(`otp-input-${index + 1}`);
       if (nextInput) nextInput.focus();
@@ -56,7 +54,6 @@ function VerifyEmail() {
     setErrorMessage('');
     setIsVerifying(true);
 
-    // Simulate instant verification
     setTimeout(() => {
       setIsVerifying(false);
       setSuccess(true);
@@ -75,14 +72,12 @@ function VerifyEmail() {
 
   return (
     <div className="min-h-screen bg-[#071527] text-white flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      
-      {/* Background Subtle Gradient Lighting */}
+
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
-        
-        {/* Brand Header */}
+
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 select-none mb-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -129,9 +124,8 @@ function VerifyEmail() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="rounded-3xl bg-[#0a1d36]/95 border border-blue-800/60 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
-          
+
           {errorMessage && (
             <div className="mb-5 p-3.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-medium flex items-start gap-2.5">
               <svg className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -155,8 +149,7 @@ function VerifyEmail() {
             </div>
           ) : (
             <form onSubmit={handleVerify} className="space-y-6">
-              
-              {/* 6-Digit Code Inputs (Direct React JSX structure, no JSON arrays) */}
+
               <div>
                 <label className="block text-slate-300 font-bold uppercase tracking-wider text-xs mb-3 text-center">
                   Enter 6-Digit Passcode
@@ -219,7 +212,6 @@ function VerifyEmail() {
                 </div>
               </div>
 
-              {/* Verify Button */}
               <button
                 type="submit"
                 disabled={isVerifying}
@@ -238,7 +230,6 @@ function VerifyEmail() {
                 )}
               </button>
 
-              {/* Resend Timer / Action */}
               <div className="text-center text-xs text-slate-400 pt-2">
                 {canResend ? (
                   <button
@@ -261,7 +252,6 @@ function VerifyEmail() {
 
         </div>
 
-        {/* Back Link */}
         <div className="mt-6 text-center text-xs text-slate-400">
           Need assistance? Reach customer desk via{' '}
           <a href="https://wa.me/2349077108987" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:text-emerald-300 font-semibold">

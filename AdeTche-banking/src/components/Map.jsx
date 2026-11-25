@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 
 function Map() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('all'); // 'all', 'branch', 'atm', 'agent'
+  const [selectedFilter, setSelectedFilter] = useState('all');
   const [selectedCity, setSelectedCity] = useState('all');
   const [selectedLocationId, setSelectedLocationId] = useState(1);
-
 
   const locations = [
     {
@@ -154,7 +153,6 @@ function Map() {
     }
   ];
 
-
   const filteredLocations = locations.filter((loc) => {
     const matchesFilter = selectedFilter === 'all' || loc.type === selectedFilter;
     const matchesCity = selectedCity === 'all' || loc.city.toLowerCase() === selectedCity.toLowerCase();
@@ -173,12 +171,10 @@ function Map() {
   return (
     <section id="map" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
 
-
       <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 left-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
 
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-500/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
@@ -194,10 +190,8 @@ function Map() {
           </p>
         </div>
 
-
         <div className="p-4 sm:p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 backdrop-blur-md shadow-xl mb-8">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-
 
             <div className="md:col-span-6 relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -224,7 +218,6 @@ function Map() {
                 </button>
               )}
             </div>
-
 
             <div className="md:col-span-6 flex flex-wrap items-center gap-2 md:justify-end">
               <button
@@ -284,7 +277,6 @@ function Map() {
 
           </div>
 
-
           <div className="mt-4 pt-4 border-t border-blue-900/40 flex flex-wrap items-center gap-2 text-xs text-slate-300">
             <span className="font-semibold text-slate-400">Quick Cities:</span>
             {['all', 'Lagos', 'Abuja', 'Ibadan', 'Port Harcourt'].map((c) => (
@@ -303,9 +295,7 @@ function Map() {
           </div>
         </div>
 
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-
 
           <div className="lg:col-span-7 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 p-4 sm:p-6 shadow-2xl relative overflow-hidden">
             <div className="flex items-center justify-between mb-4">
@@ -317,9 +307,7 @@ function Map() {
               </div>
             </div>
 
-
             <div className="relative w-full h-80 sm:h-96 md:h-[420px] rounded-xl bg-gradient-to-b from-[#051326] via-[#071933] to-[#040e1c] border border-blue-800/40 overflow-hidden shadow-inner flex items-center justify-center">
-
 
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e3a8a15_1px,transparent_1px),linear-gradient(to_bottom,#1e3a8a15_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
 
@@ -348,7 +336,6 @@ function Map() {
                 />
               </svg>
 
-
               {filteredLocations.map((loc) => {
                 const isSelected = activeLocation.id === loc.id;
                 return (
@@ -362,7 +349,6 @@ function Map() {
                     {isSelected && (
                       <span className="absolute -inset-1 rounded-full bg-blue-500/30 border border-blue-400/50 pointer-events-none" />
                     )}
-
 
                     <div
                       className={`w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-lg ${isSelected
@@ -391,7 +377,6 @@ function Map() {
                       )}
                     </div>
 
-
                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block bg-[#071527] border border-blue-500/50 rounded-lg px-2.5 py-1 text-xs text-white whitespace-nowrap shadow-xl z-30 pointer-events-none">
                       <div className="font-bold">{loc.name}</div>
                       <div className="text-[10px] text-blue-400">{loc.city} | {loc.typeName}</div>
@@ -399,7 +384,6 @@ function Map() {
                   </div>
                 );
               })}
-
 
               <div className="absolute bottom-3 left-3 bg-[#071527]/90 border border-blue-900/50 rounded-lg p-2.5 backdrop-blur-md text-[11px] space-y-1.5 shadow-md">
                 <div className="flex items-center gap-2">
@@ -418,13 +402,11 @@ function Map() {
 
             </div>
 
-
             <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
               <span>Click any marker to view full opening hours and directions</span>
               <span className="text-blue-400 font-medium">Nationwide Coverage</span>
             </div>
           </div>
-
 
           <div className="lg:col-span-5 p-6 sm:p-7 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-2xl relative flex flex-col justify-between">
             <div>
@@ -446,7 +428,6 @@ function Map() {
                 </span>
               </div>
 
-
               {activeLocation.image && (
                 <div className="relative w-full h-44 rounded-xl overflow-hidden mb-5 border border-blue-800/40 shadow-lg group">
                   <img
@@ -463,11 +444,9 @@ function Map() {
                 </div>
               )}
 
-
               <h3 className="font-display font-bold text-xl sm:text-2xl text-white mb-3">
                 {activeLocation.name}
               </h3>
-
 
               <div className="flex items-start gap-2.5 text-sm text-slate-300 mb-6">
                 <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -476,7 +455,6 @@ function Map() {
                 </svg>
                 <span>{activeLocation.address}</span>
               </div>
-
 
               <div className="p-4 rounded-xl bg-[#071527] border border-blue-900/60 mb-6">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-400 mb-2.5">
@@ -519,7 +497,6 @@ function Map() {
                 </div>
               </div>
 
-
               <div className="flex items-center gap-2 text-xs text-slate-400 mb-6">
                 <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -527,7 +504,6 @@ function Map() {
                 <span>Phone: <strong className="text-white">{activeLocation.phone}</strong></span>
               </div>
             </div>
-
 
             <div>
               <a
@@ -553,4 +529,3 @@ function Map() {
 }
 
 export default Map;
-

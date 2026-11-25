@@ -36,13 +36,11 @@ function Contact() {
   return (
     <section id="contact" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
 
-      {/* Background Decorative Glow Accents */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        {/* Section Top Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
             CONNECT WITH US
@@ -57,15 +55,10 @@ function Contact() {
           </p>
         </div>
 
-        {/* =========================================================================
-            TWO-COLUMN CONTACT LAYOUT: QUICK CHANNELS (LEFT) & FORM (RIGHT)
-           ========================================================================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
 
-          {/* ---------------- LEFT COLUMN: DIRECT CHANNELS (DIRECT REACT JSX) ---------------- */}
           <div className="lg:col-span-5 space-y-6">
 
-            {/* CHANNEL 1: WHATSAPP */}
             <a
               href="https://wa.me/2349077108987?text=Hello%20AdeTech%20Banking%2C%20I%20would%20like%20to%20make%20an%20inquiry."
               target="_blank"
@@ -99,7 +92,6 @@ function Contact() {
               </div>
             </a>
 
-            {/* CHANNEL 2: EMAIL */}
             <a
               href="mailto:amiflexboyc@gmail.com?subject=AdeTech%20Banking%20Inquiry"
               className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-1 shadow-xl block group"
@@ -131,7 +123,6 @@ function Contact() {
               </div>
             </a>
 
-            {/* CHANNEL 3: DIRECT PHONE & LOCATION INFO */}
             <div className="p-6 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl">
               <div className="space-y-4">
                 <div className="flex items-center gap-3.5">
@@ -167,7 +158,6 @@ function Contact() {
 
           </div>
 
-          {/* ---------------- RIGHT COLUMN: INTERACTIVE BANKING CONTACT FORM ---------------- */}
           <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-2xl backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
@@ -206,7 +196,7 @@ function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {/* Full Name */}
+
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                         Full Name
@@ -222,7 +212,6 @@ function Contact() {
                       />
                     </div>
 
-                    {/* Email */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                         Email Address
@@ -240,7 +229,7 @@ function Contact() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    {/* Phone Number */}
+
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                         Phone Number
@@ -255,7 +244,6 @@ function Contact() {
                       />
                     </div>
 
-                    {/* Inquiry Type */}
                     <div>
                       <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                         Inquiry Topic
@@ -275,7 +263,6 @@ function Contact() {
                     </div>
                   </div>
 
-                  {/* Message */}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">
                       Your Message
@@ -291,7 +278,6 @@ function Contact() {
                     />
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 shadow-xl shadow-blue-600/30 border border-blue-400/40 transition-all transform hover:-translate-y-0.5"
@@ -319,4 +305,3 @@ function Contact() {
 }
 
 export default Contact;
-

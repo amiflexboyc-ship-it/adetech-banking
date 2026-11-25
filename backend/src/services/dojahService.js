@@ -1,27 +1,8 @@
 import https from 'https';
 
-/**
- * Dojah Service for Real-time Nigerian Bank Account Resolution & KYC Verification
- * 
- * Legitimate integration with Dojah Financial & KYC API (https://dojah.io):
- * - Bank List: https://api.dojah.io/api/v1/general/banks
- * - Account Name Resolution: https://api.dojah.io/api/v1/resolve/account?account_number=...&bank_code=...
- * - BVN Verification: https://api.dojah.io/api/v1/kyc/bvn/full?bvn=...
- * - NIN Verification: https://api.dojah.io/api/v1/kyc/nin?nin=...
- * 
- * Strict Banking Standards:
- * - Real API integration only; no simulated or fake account names.
- * - Secret credentials kept exclusively in backend environment variables:
- *   process.env.DOJAH_PRIVATE_KEY
- *   process.env.DOJAH_APP_ID
- * - Clean CBN NUBAN validation and error propagation.
- */
-
-// Comprehensive built-in catalog of Nigerian CBN bank codes used by Dojah & NIBSS
 const NIGERIAN_BANK_CATALOG = [
   { name: 'AdeTech Banking', code: '090', isInternal: true, category: 'Core Network' },
 
-  // Commercial Banks (CBN Licensed)
   { name: 'Access Bank', code: '044', category: 'Commercial Bank' },
   { name: 'Access Bank (Diamond)', code: '063', category: 'Commercial Bank' },
   { name: 'Citibank Nigeria', code: '023', category: 'Commercial Bank' },
@@ -51,7 +32,6 @@ const NIGERIAN_BANK_CATALOG = [
   { name: 'Wema Bank', code: '035', category: 'Commercial Bank' },
   { name: 'Zenith Bank', code: '057', category: 'Commercial Bank' },
 
-  // Digital Banks, Fintechs & Payment Service Banks
   { name: 'OPay Digital Services', code: '999992', category: 'Digital Bank / PSB' },
   { name: 'Palmpay Limited', code: '999991', category: 'Digital Bank / PSB' },
   { name: 'Moniepoint Microfinance Bank', code: '50515', category: 'Digital Bank / PSB' },
@@ -71,20 +51,17 @@ const NIGERIAN_BANK_CATALOG = [
   { name: 'MoMo Payment Service Bank', code: '120003', category: 'Digital Bank / PSB' },
   { name: 'Smartcash Payment Service Bank', code: '120004', category: 'Digital Bank / PSB' },
 
-  // Non-Interest & Islamic Banks
   { name: 'Jaiz Bank', code: '301', category: 'Non-Interest Bank' },
   { name: 'TAJBank', code: '302', category: 'Non-Interest Bank' },
   { name: 'Lotus Bank', code: '303', category: 'Non-Interest Bank' },
   { name: 'Alterna Bank', code: '304', category: 'Non-Interest Bank' },
 
-  // Merchant Banks
   { name: 'Coronation Merchant Bank', code: '559', category: 'Merchant Bank' },
   { name: 'FBNQuest Merchant Bank', code: '560', category: 'Merchant Bank' },
   { name: 'FSDH Merchant Bank', code: '501', category: 'Merchant Bank' },
   { name: 'Greenwich Merchant Bank', code: '562', category: 'Merchant Bank' },
   { name: 'Rand Merchant Bank', code: '502', category: 'Merchant Bank' },
 
-  // Microfinance & Mortgage Banks
   { name: 'Accion Microfinance Bank', code: '602', category: 'Microfinance & Mortgage' },
   { name: 'LAPO Microfinance Bank', code: '50400', category: 'Microfinance & Mortgage' },
   { name: 'Mutual Trust Microfinance Bank', code: '50563', category: 'Microfinance & Mortgage' },
@@ -104,13 +81,10 @@ class DojahService {
   constructor() {
     this.cachedBanks = null;
     this.lastBankFetch = 0;
-    this.CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+    this.CACHE_DURATION = 24 * 60 * 60 * 1000;
     this.hostname = 'api.dojah.io';
   }
 
-  /**
-   * Check if Dojah credentials (Private Key and App ID) are configured in environment
-   */
   hasCredentials() {
     const privateKey = this.getPrivateKey();
     const appId = this.getAppId();
@@ -122,31 +96,19 @@ class DojahService {
     );
   }
 
-  /**
-   * Check if running with Dojah Test / Sandbox credentials
-   */
   isTestMode() {
     const key = this.getPrivateKey();
     return key.startsWith('test_') || key.startsWith('sandbox_');
   }
 
-  /**
-   * Get Dojah Private Key from environment
-   */
   getPrivateKey() {
     return (process.env.DOJAH_PRIVATE_KEY || process.env.DOJAH_SECRET_KEY || '').trim();
   }
 
-  /**
-   * Get Dojah App ID from environment
-   */
   getAppId() {
     return (process.env.DOJAH_APP_ID || '').trim();
   }
 
-  /**
-   * Fetch live Nigerian bank list from Dojah API
-   */
   async fetchLiveBanks() {
     const now = Date.now();
     if (this.cachedBanks && now - this.lastBankFetch < this.CACHE_DURATION) {
@@ -165,15 +127,12 @@ class DojahService {
         return this.cachedBanks;
       }
     } catch {
-      // Fall back to built-in catalog if network request fails
+
     }
 
     return this.cachedBanks || NIGERIAN_BANK_CATALOG;
   }
 
-  /**
-   * Retrieve all supported Nigerian banks for transfer selection
-   */
   async getSupportedBanks() {
     try {
       const liveBanks = await this.fetchLiveBanks();
@@ -197,15 +156,12 @@ class DojahService {
         ];
       }
     } catch {
-      // Fallback
+
     }
 
     return NIGERIAN_BANK_CATALOG;
   }
 
-  /**
-   * Categorize bank for organized UI display
-   */
   categorizeBank(name) {
     const lower = String(name || '').toLowerCase();
     if (lower.includes('opay') || lower.includes('palmpay') || lower.includes('kuda') || lower.includes('moniepoint') || lower.includes('carbon') || lower.includes('psb')) {
@@ -223,9 +179,6 @@ class DojahService {
     return 'Commercial Bank';
   }
 
-  /**
-   * Resolve bank code from bank name or existing code
-   */
   getBankCode(bankName, bankCode) {
     if (bankCode && String(bankCode).trim().length >= 3) {
       return String(bankCode).trim();
@@ -234,7 +187,6 @@ class DojahService {
     if (!bankName) return null;
     const cleanName = bankName.trim().toLowerCase();
 
-    // Check built-in catalog
     const catalogMatch = NIGERIAN_BANK_CATALOG.find((b) => {
       const bLower = b.name.toLowerCase();
       return (
@@ -248,7 +200,6 @@ class DojahService {
       return catalogMatch.code;
     }
 
-    // Check cached live banks
     if (this.cachedBanks && Array.isArray(this.cachedBanks)) {
       const liveMatch = this.cachedBanks.find((b) => {
         const bName = String(b.name || b.bank_name || '').toLowerCase();
@@ -266,15 +217,6 @@ class DojahService {
     return null;
   }
 
-  /**
-   * Resolve 10-digit NUBAN Nigerian Bank Account Name via Dojah API
-   * 
-   * Endpoint: GET /api/v1/resolve/account?account_number=...&bank_code=...
-   * 
-   * @param {string} accountNumber 10-digit NUBAN account number
-   * @param {string} bankCode 3-digit CBN bank code (e.g. 058 for GTBank, 044 for Access Bank)
-   * @returns {Promise<{accountName: string, accountNumber: string, bankCode: string}>}
-   */
   async resolveAccountNumber(accountNumber, bankCode) {
     const cleanAcc = String(accountNumber || '').trim();
     const cleanCode = String(bankCode || '').trim();
@@ -323,14 +265,6 @@ class DojahService {
     }
   }
 
-  /**
-   * Verify Nigerian BVN (Bank Verification Number) via Dojah KYC API
-   * 
-   * Endpoint: GET /api/v1/kyc/bvn/full?bvn=...
-   * 
-   * @param {string} bvn 11-digit BVN
-   * @returns {Promise<object>} BVN customer details
-   */
   async resolveBVN(bvn) {
     const cleanBvn = String(bvn || '').trim();
     if (!/^\d{11}$/.test(cleanBvn)) {
@@ -353,14 +287,6 @@ class DojahService {
     throw new Error(response?.error || response?.message || 'Could not verify BVN details.');
   }
 
-  /**
-   * Verify Nigerian NIN (National Identity Number) via Dojah KYC API
-   * 
-   * Endpoint: GET /api/v1/kyc/nin?nin=...
-   * 
-   * @param {string} nin 11-digit NIN
-   * @returns {Promise<object>} NIN customer details
-   */
   async resolveNIN(nin) {
     const cleanNin = String(nin || '').trim();
     if (!/^\d{11}$/.test(cleanNin)) {
@@ -383,14 +309,6 @@ class DojahService {
     throw new Error(response?.error || response?.message || 'Could not verify NIN details.');
   }
 
-  /**
-   * Verify Nigerian Phone Number via Dojah KYC API
-   * 
-   * Endpoint: GET /api/v1/kyc/phone_number?phone=...
-   * 
-   * @param {string} phone Nigerian phone number
-   * @returns {Promise<object>} Phone KYC profile
-   */
   async resolvePhoneNumber(phone) {
     const cleanPhone = String(phone || '').trim().replace(/\D/g, '');
     if (cleanPhone.length < 10) {
@@ -413,9 +331,6 @@ class DojahService {
     throw new Error(response?.error || response?.message || 'Could not verify phone number details.');
   }
 
-  /**
-   * Low-level HTTPS request wrapper with Dojah API authentication headers
-   */
   makeHttpsRequest(path, method = 'GET', body = null) {
     return new Promise((resolve, reject) => {
       const privateKey = this.getPrivateKey();

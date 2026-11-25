@@ -1,20 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 
-/**
- * ProtectedRoute Component for AdeTech Banking
- * 
- * Secures banking routes (e.g. Dashboard, Transfer, Cards, Settings).
- * - Verifies user authentication via props or secure client session.
- * - Redirects unauthorized visitors to the login portal with return location state.
- * - Renders children or nested <Outlet /> when verified.
- * - Strict zero emojis, corporate navy styling.
- * 
- * @param {Object} props
- * @param {boolean} [props.isAuthenticated] - Explicit authentication status
- * @param {React.ReactNode} [props.children] - Protected components to display
- * @param {string} [props.redirectPath='/login'] - Destination path if unauthenticated
- */
 export function ProtectedRoute({
   isAuthenticated,
   children,
@@ -25,18 +11,17 @@ export function ProtectedRoute({
   const [isAuth, setIsAuth] = useState(false);
 
   useEffect(() => {
-    // 1. If explicit prop is supplied, prioritize it
+
     if (typeof isAuthenticated === 'boolean') {
       setIsAuth(isAuthenticated);
       setCheckingAuth(false);
       return;
     }
 
-    // 2. Inspect client session storage for active credentials
     try {
       const token = localStorage.getItem('adetech_token') || localStorage.getItem('adetech_auth_token');
       const sessionAuth = localStorage.getItem('adetech_is_authenticated');
-      
+
       if (token || sessionAuth === 'true') {
         setIsAuth(true);
       } else {
@@ -49,7 +34,6 @@ export function ProtectedRoute({
     }
   }, [isAuthenticated]);
 
-  // Banking Security Verification Spinner
   if (checkingAuth) {
     return (
       <div className="min-h-screen bg-[#071527] flex flex-col items-center justify-center p-4 text-white">
@@ -73,14 +57,11 @@ export function ProtectedRoute({
     );
   }
 
-  // If unauthenticated, redirect to login route while preserving target path
   if (!isAuth) {
     return <Navigate to={redirectPath} replace state={{ from: location }} />;
   }
 
-  // If authenticated, render provided children or nested route Outlet
   return children ? children : <Outlet />;
 }
 
 export default ProtectedRoute;
-

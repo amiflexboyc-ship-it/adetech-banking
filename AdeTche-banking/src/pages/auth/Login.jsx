@@ -47,14 +47,11 @@ function Login() {
   return (
     <div className="min-h-screen bg-[#071527] text-white flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
 
-      {/* Background Subtle Gradient Lighting */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
-      {/* Main Container */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
 
-        {/* Brand Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 select-none mb-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -99,10 +96,8 @@ function Login() {
 
         </div>
 
-        {/* Card Form */}
         <div className="rounded-3xl bg-[#0a1d36]/95 border border-blue-800/60 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
 
-          {/* Status Messages */}
           {errorMessage && (
             <div className="mb-5 p-3.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-medium flex items-start gap-2.5">
               <svg className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -123,7 +118,6 @@ function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
 
-            {/* Email Address */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Email Address or Account ID
@@ -139,7 +133,6 @@ function Login() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-slate-300 font-bold uppercase tracking-wider">
@@ -176,7 +169,6 @@ function Login() {
               </div>
             </div>
 
-            {/* Remember Device */}
             <div className="flex items-center justify-between pt-1">
               <label className="flex items-center gap-2 cursor-pointer select-none">
                 <input
@@ -189,10 +181,8 @@ function Login() {
                 <span className="text-[11px] text-slate-300">Remember this trusted device</span>
               </label>
 
-
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -213,8 +203,6 @@ function Login() {
 
           </form>
 
-
-          {/* Register Link */}
           <div className="mt-6 pt-6 border-t border-blue-900/50 text-center text-xs text-slate-400">
             Don't have an AdeTech account?{' '}
             <Link to="/register" className="text-blue-400 hover:text-white font-bold transition-colors">
@@ -223,8 +211,6 @@ function Login() {
           </div>
 
         </div>
-
-
 
       </div>
     </div>

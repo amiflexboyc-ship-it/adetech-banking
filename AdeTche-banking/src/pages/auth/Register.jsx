@@ -58,7 +58,7 @@ function Register() {
         navigate('/verify-email', { state: { email: formData.email } });
       }, 1500);
     } catch (err) {
-      // If backend is offline or returned error, provide clean guidance
+
       setErrorMessage(err.message || 'Registration failed. Please check your network connection.');
     } finally {
       setLoading(false);
@@ -68,14 +68,11 @@ function Register() {
   return (
     <div className="min-h-screen bg-[#071527] text-white flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
 
-      {/* Background Subtle Gradient Lighting */}
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
-      {/* Main Container */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
 
-        {/* Brand Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 select-none mb-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -120,10 +117,8 @@ function Register() {
 
         </div>
 
-        {/* Card Form */}
         <div className="rounded-3xl bg-[#0a1d36]/95 border border-blue-800/60 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
 
-          {/* Status Messages */}
           {errorMessage && (
             <div className="mb-5 p-3.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-medium flex items-start gap-2.5">
               <svg className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +139,6 @@ function Register() {
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
 
-            {/* Full Name */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Full Legal Name
@@ -160,7 +154,6 @@ function Register() {
               />
             </div>
 
-            {/* Email Address */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Email Address
@@ -176,7 +169,6 @@ function Register() {
               />
             </div>
 
-            {/* Phone Number */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Phone Number
@@ -192,7 +184,6 @@ function Register() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Create Security Password
@@ -220,7 +211,6 @@ function Register() {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                 Confirm Password
@@ -236,7 +226,6 @@ function Register() {
               />
             </div>
 
-            {/* Compliance Terms Checkbox */}
             <div className="flex items-start gap-2.5 pt-2">
               <input
                 id="agreeTerms"
@@ -251,7 +240,6 @@ function Register() {
               </label>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
@@ -272,7 +260,6 @@ function Register() {
 
           </form>
 
-          {/* Bottom Login Link */}
           <div className="mt-6 pt-6 border-t border-blue-900/50 text-center text-xs text-slate-400">
             Already have an account?{' '}
             <Link to="/login" className="text-blue-400 hover:text-white font-bold transition-colors">

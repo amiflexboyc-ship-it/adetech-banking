@@ -1,8 +1,3 @@
-/**
- * AdeTech Digital Banking API Client
- * Automatically connects to http://localhost:5000/api
- */
-
 const getApiBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
   if (typeof window !== 'undefined' && window.location.hostname) {
@@ -13,7 +8,6 @@ const getApiBaseUrl = () => {
 
 const API_BASE_URL = getApiBaseUrl();
 
-// Helper for authenticated requests
 const request = async (endpoint, options = {}) => {
   const token = localStorage.getItem('adetech_token') || localStorage.getItem('adetech_auth_token');
 
@@ -24,7 +18,7 @@ const request = async (endpoint, options = {}) => {
   };
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 8000);
+  const timeoutId = setTimeout(() => controller.abort(), 30000);
 
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
@@ -51,7 +45,7 @@ const request = async (endpoint, options = {}) => {
 };
 
 export const api = {
-  // Authentication
+
   auth: {
     login: async (email, password) => {
       const data = await request('/auth/login', {
@@ -119,7 +113,6 @@ export const api = {
     }
   },
 
-  // Banking Account
   account: {
     getDetails: () => request('/account/details'),
     getCards: () => request('/account/cards'),
@@ -130,7 +123,6 @@ export const api = {
       })
   },
 
-  // Transactions
   transactions: {
     getAll: () => request('/transactions'),
     getSupportedBanks: () => request('/transactions/supported-banks'),
@@ -167,7 +159,6 @@ export const api = {
       })
   },
 
-  // Notifications
   notifications: {
     getAll: () => request('/notifications'),
     markAllRead: () =>
@@ -176,7 +167,6 @@ export const api = {
       })
   },
 
-  // Contact Form
   contact: {
     submit: (inquiryData) =>
       request('/contact', {
@@ -185,7 +175,6 @@ export const api = {
       })
   },
 
-  // Central Banking Admin Operations
   admin: {
     getOverview: () => request('/admin/overview'),
     getCustomers: () => request('/admin/customers'),

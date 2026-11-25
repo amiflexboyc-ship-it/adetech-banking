@@ -5,7 +5,6 @@ function NotificationBell() {
   const [unreadCount, setUnreadCount] = useState(3);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -24,7 +23,7 @@ function NotificationBell() {
 
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
-      {/* Bell Trigger Button */}
+
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -32,7 +31,7 @@ function NotificationBell() {
         aria-expanded={isOpen}
         className="relative p-2.5 rounded-xl bg-[#0a1d36] hover:bg-[#0d2545] border border-blue-900/50 hover:border-blue-500/50 text-slate-200 hover:text-white transition-all focus:outline-none"
       >
-        {/* Clean Bell SVG */}
+
         <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
             strokeLinecap="round"
@@ -42,7 +41,6 @@ function NotificationBell() {
           />
         </svg>
 
-        {/* Unread Counter Badge */}
         {unreadCount > 0 && (
           <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center border border-[#071527] shadow-md">
             {unreadCount}
@@ -50,11 +48,9 @@ function NotificationBell() {
         )}
       </button>
 
-      {/* Notifications Dropdown Panel (Responsive: Mobile Sheet / Desktop Dropdown) */}
       {isOpen && (
         <div className="fixed inset-x-3 top-20 sm:absolute sm:inset-auto sm:right-0 sm:top-auto sm:mt-3 sm:w-96 max-h-[85vh] sm:max-h-[520px] rounded-2xl bg-[#0a1d36] border border-blue-800/60 shadow-2xl backdrop-blur-xl z-50 overflow-hidden flex flex-col animate-in fade-in duration-200">
-          
-          {/* Header */}
+
           <div className="p-4 bg-gradient-to-r from-[#071527] to-[#0a1d36] border-b border-blue-900/60 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="font-display font-bold text-sm text-white">Notifications</span>
@@ -80,10 +76,8 @@ function NotificationBell() {
             )}
           </div>
 
-          {/* Direct React JSX Notification Items (No JSON Data Array) */}
           <div className="max-h-[380px] overflow-y-auto divide-y divide-blue-900/40">
 
-            {/* Notification 1: Credit Inflow */}
             <div className="p-4 hover:bg-blue-950/40 transition-colors flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-cyan-950/60 border border-cyan-800/50 flex-shrink-0 flex items-center justify-center text-cyan-400">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +100,6 @@ function NotificationBell() {
               </div>
             </div>
 
-            {/* Notification 2: Security Verification */}
             <div className="p-4 hover:bg-blue-950/40 transition-colors flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-blue-950/60 border border-blue-800/50 flex-shrink-0 flex items-center justify-center text-blue-400">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +122,6 @@ function NotificationBell() {
               </div>
             </div>
 
-            {/* Notification 3: Virtual Card Generated */}
             <div className="p-4 hover:bg-blue-950/40 transition-colors flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-blue-950/60 border border-blue-800/50 flex-shrink-0 flex items-center justify-center text-blue-400">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,7 +145,6 @@ function NotificationBell() {
               </div>
             </div>
 
-            {/* Notification 4: Wealth Vault Yield */}
             <div className="p-4 hover:bg-blue-950/40 transition-colors flex items-start gap-3.5">
               <div className="w-9 h-9 rounded-xl bg-cyan-950/60 border border-cyan-800/50 flex-shrink-0 flex items-center justify-center text-cyan-400">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +169,6 @@ function NotificationBell() {
 
           </div>
 
-          {/* Footer Bar */}
           <div className="p-3 bg-[#071527] border-t border-blue-900/60 flex items-center justify-between text-xs">
             <button
               type="button"
@@ -199,4 +189,3 @@ function NotificationBell() {
 }
 
 export default NotificationBell;
-

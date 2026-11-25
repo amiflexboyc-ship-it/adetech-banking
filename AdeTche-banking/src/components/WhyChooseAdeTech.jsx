@@ -4,40 +4,32 @@ function WhyChooseAdeTech() {
   return (
     <section id="why-choose" className="relative py-24 bg-[#071527] text-white overflow-hidden border-t border-blue-900/40">
 
-      {/* Subtle Background Lighting */}
       <div className="absolute top-1/3 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
 
-          {/* Left Column: 5 Core Reasons */}
           <div className="lg:col-span-7 flex flex-col justify-center">
 
-            {/* Top Pill Badge */}
             <div className="inline-flex items-center self-start px-3.5 py-1.5 rounded-full bg-blue-900/60 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
               WHY CHOOSE ADETECH
             </div>
 
-            {/* Main Header */}
             <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-5 leading-tight">
               Why Choose AdeTech Banking?
             </h2>
 
-            {/* Introductory Description */}
             <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-6 font-normal">
               At AdeTech Banking, we believe banking should be simple, secure, and convenient. Our goal is to make managing your money easier by providing a modern digital banking experience.
             </p>
 
-            {/* Sub-header */}
             <h3 className="font-display text-lg sm:text-xl font-bold text-blue-400 mb-6 tracking-wide">
               Why customers choose us:
             </h3>
 
-            {/* ---------------- 5 REASONS (DIRECT REACT JSX STRUCTURE) ---------------- */}
             <div className="space-y-4 mb-8">
 
-              {/* 1. Security First */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-0.5 shadow-lg flex items-start gap-4 group">
                 <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex-shrink-0 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +47,6 @@ function WhyChooseAdeTech() {
                 </div>
               </div>
 
-              {/* 2. Fast Transactions */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-0.5 shadow-lg flex items-start gap-4 group">
                 <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex-shrink-0 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,7 +63,6 @@ function WhyChooseAdeTech() {
                 </div>
               </div>
 
-              {/* 3. Easy Payments */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-0.5 shadow-lg flex items-start gap-4 group">
                 <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex-shrink-0 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -90,7 +80,6 @@ function WhyChooseAdeTech() {
                 </div>
               </div>
 
-              {/* 4. Bank Anywhere */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-0.5 shadow-lg flex items-start gap-4 group">
                 <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex-shrink-0 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -108,7 +97,6 @@ function WhyChooseAdeTech() {
                 </div>
               </div>
 
-              {/* 5. Customer Support */}
               <div className="p-4 sm:p-5 rounded-2xl bg-[#0a1d36]/90 border border-blue-900/50 hover:border-blue-500/50 transition-all duration-300 hover:-translate-y-0.5 shadow-lg flex items-start gap-4 group">
                 <div className="w-11 h-11 rounded-xl bg-blue-600/20 border border-blue-500/30 flex-shrink-0 flex items-center justify-center text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +134,6 @@ function WhyChooseAdeTech() {
             </div>
 
           </div>
-
 
           {/* Right Column: Normal 16:9 Video Embed */}
           <div className="lg:col-span-5 flex flex-col justify-center">

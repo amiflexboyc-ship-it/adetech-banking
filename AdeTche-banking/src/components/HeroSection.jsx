@@ -23,16 +23,14 @@ function HeroSection() {
   return (
     <section id="home" className="relative flex-1 flex flex-col justify-center overflow-hidden min-h-[calc(100vh-5rem)] bg-[#071527]">
 
-      {/* Slides Container */}
       <div className="relative w-full h-full flex-1 min-h-[560px] sm:min-h-[640px] lg:min-h-[720px] flex items-center">
 
-        {/* ==================== SLIDE 1 ==================== */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             currentSlide === 0 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
-          {/* Background: Modern Skyscraper with BANK Architecture */}
+
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
             style={{
@@ -43,11 +41,9 @@ function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#071527]/90 via-[#071527]/60 to-[#071527]/25" />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#071527] to-transparent pointer-events-none" />
 
-          {/* Slide 1 Content */}
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 lg:py-0">
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-              {/* Left Column: Text & Buttons */}
               <div className="lg:col-span-7 py-6">
                 <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/70 border border-blue-400/50 text-blue-300 text-xs font-bold uppercase tracking-wider mb-5 shadow-lg backdrop-blur-md">
                   COMMERCIAL & DIGITAL BANKING
@@ -81,13 +77,11 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Right Column: Circular Side Image */}
               <div className="hidden md:flex lg:col-span-5 justify-center lg:justify-end">
                 <div className="relative group">
-                  {/* Glowing Circular Ring */}
+
                   <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition duration-700" />
 
-                  {/* Circular Image Container */}
                   <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-blue-400/50 shadow-2xl shadow-blue-600/40 bg-[#0a1d36]">
                     <img
                       src="/images/phone-app-1.jpg"
@@ -96,7 +90,6 @@ function HeroSection() {
                     />
                   </div>
 
-                  {/* Circular Bottom Floating Badge */}
                   <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-[#071527]/95 backdrop-blur-md border border-blue-400/50 text-xs text-white shadow-xl flex items-center whitespace-nowrap">
                     <span className="font-semibold text-slate-100">Adetech Mobile Banking | ₦150k</span>
                   </div>
@@ -107,13 +100,12 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* ==================== SLIDE 2 ==================== */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             currentSlide === 1 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
-          {/* Background: Central Bank with Multi-Currency Signs */}
+
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
             style={{
@@ -124,11 +116,9 @@ function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#071527]/90 via-[#071527]/60 to-[#071527]/25" />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#071527] to-transparent pointer-events-none" />
 
-          {/* Slide 2 Content */}
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 lg:py-0">
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-              {/* Left Column: Text & Buttons */}
               <div className="lg:col-span-7 py-6">
                 <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/70 border border-blue-400/50 text-blue-300 text-xs font-bold uppercase tracking-wider mb-5 shadow-lg backdrop-blur-md">
                   GLOBAL TREASURY & MULTI-CURRENCY
@@ -162,7 +152,6 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Right Column: Circular Side Image */}
               <div className="hidden md:flex lg:col-span-5 justify-center lg:justify-end">
                 <div className="relative group">
                   <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-500 via-indigo-400 to-blue-600 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition duration-700" />
@@ -185,13 +174,12 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* ==================== SLIDE 3 ==================== */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             currentSlide === 2 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
-          {/* Background: Modern Skyline with Growth Arrow */}
+
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
             style={{
@@ -202,11 +190,9 @@ function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#071527]/90 via-[#071527]/60 to-[#071527]/25" />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#071527] to-transparent pointer-events-none" />
 
-          {/* Slide 3 Content */}
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 lg:py-0">
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-              {/* Left Column: Text & Buttons */}
               <div className="lg:col-span-7 py-6">
                 <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/70 border border-blue-400/50 text-blue-300 text-xs font-bold uppercase tracking-wider mb-5 shadow-lg backdrop-blur-md">
                   SMART DIGITAL CARDS & PAYMENTS
@@ -240,7 +226,6 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Right Column: Circular Side Image */}
               <div className="hidden md:flex lg:col-span-5 justify-center lg:justify-end">
                 <div className="relative group">
                   <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-500 via-teal-400 to-blue-600 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition duration-700" />
@@ -263,13 +248,12 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* ==================== SLIDE 4 ==================== */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             currentSlide === 3 ? 'opacity-100 z-10 pointer-events-auto' : 'opacity-0 z-0 pointer-events-none'
           }`}
         >
-          {/* Background: Modern Corporate Blue Glass Skyscraper */}
+
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-700"
             style={{
@@ -280,11 +264,9 @@ function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-r from-[#071527]/90 via-[#071527]/60 to-[#071527]/25" />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#071527] to-transparent pointer-events-none" />
 
-          {/* Slide 4 Content */}
           <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center py-10 lg:py-0">
             <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
 
-              {/* Left Column: Text & Buttons */}
               <div className="lg:col-span-7 py-6">
                 <div className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-blue-900/70 border border-blue-400/50 text-blue-300 text-xs font-bold uppercase tracking-wider mb-5 shadow-lg backdrop-blur-md">
                   WEALTH ACCUMULATION & ASSET SECURITY
@@ -318,7 +300,6 @@ function HeroSection() {
                 </div>
               </div>
 
-              {/* Right Column: Circular Side Image */}
               <div className="hidden md:flex lg:col-span-5 justify-center lg:justify-end">
                 <div className="relative group">
                   <div className="absolute -inset-1.5 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600 rounded-full blur-xl opacity-40 group-hover:opacity-60 transition duration-700" />
@@ -343,11 +324,9 @@ function HeroSection() {
 
       </div>
 
-      {/* Slide Controls Bar (Prev, Direct Indicator Buttons, Next, Pause/Play) */}
       <div className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8">
         <div className="flex flex-wrap items-center justify-between gap-4 p-3.5 rounded-2xl bg-[#071527]/85 border border-blue-900/60 backdrop-blur-md shadow-2xl">
 
-          {/* Direct Slide Indicator Buttons */}
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -402,7 +381,6 @@ function HeroSection() {
             </button>
           </div>
 
-          {/* Prev, Next, Play/Pause Controls */}
           <div className="flex items-center gap-2">
             <button
               type="button"

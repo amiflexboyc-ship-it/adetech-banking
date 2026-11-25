@@ -23,8 +23,7 @@ function Notifications() {
       </div>
 
       <div className="p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl divide-y divide-blue-900/40">
-        
-        {/* Notice 1 */}
+
         <div className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
           <div className="w-10 h-10 rounded-2xl bg-cyan-950/60 border border-cyan-800/50 flex-shrink-0 flex items-center justify-center text-cyan-400">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +44,6 @@ function Notifications() {
           </div>
         </div>
 
-        {/* Notice 2 */}
         <div className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
           <div className="w-10 h-10 rounded-2xl bg-blue-950/60 border border-blue-800/50 flex-shrink-0 flex items-center justify-center text-blue-400">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +64,6 @@ function Notifications() {
           </div>
         </div>
 
-        {/* Notice 3 */}
         <div className="py-4 first:pt-0 last:pb-0 flex items-start gap-4">
           <div className="w-10 h-10 rounded-2xl bg-blue-950/60 border border-blue-800/50 flex-shrink-0 flex items-center justify-center text-blue-400">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

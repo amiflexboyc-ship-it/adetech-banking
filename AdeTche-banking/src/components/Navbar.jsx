@@ -15,7 +15,6 @@ function Navbar() {
     <header className="sticky top-0 z-50 bg-[#071527]/90 backdrop-blur-md border-b border-blue-900/40 shadow-lg shadow-black/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
 
-        {/* Best Logo for AdeTech Banking */}
         <Link to="/" className="flex items-center gap-3 cursor-pointer select-none">
           <div className="relative w-11 h-11 flex-shrink-0">
             <svg viewBox="0 0 48 48" fill="none" className="w-full h-full drop-shadow-[0_4px_12px_rgba(37,99,235,0.45)]">
@@ -54,7 +53,6 @@ function Navbar() {
           </div>
         </Link>
 
-        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
           <a href="#home" className="text-white hover:text-blue-400 transition-colors">Home</a>
           <a href="#about" className="hover:text-blue-400 transition-colors">About</a>
@@ -66,7 +64,6 @@ function Navbar() {
           <a href="#contact" className="hover:text-blue-400 transition-colors">Contact</a>
         </nav>
 
-        {/* Action Buttons */}
         <div className="flex items-center gap-2 sm:gap-3">
           <NotificationBell />
 
@@ -116,7 +113,6 @@ function Navbar() {
             </>
           )}
 
-          {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -136,7 +132,6 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden px-4 pt-3 pb-6 bg-[#0a1d36] border-b border-blue-900/50 space-y-2 animate-in slide-in-from-top-4 duration-200">
           <a href="#home" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 px-3 rounded-lg text-slate-200 hover:text-blue-400 hover:bg-[#071527] font-medium transition-colors">Home</a>
@@ -147,7 +142,7 @@ function Navbar() {
           <a href="#crs" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 px-3 rounded-lg text-slate-200 hover:text-blue-400 hover:bg-[#071527] font-medium transition-colors">CRS (Sustainability)</a>
           <a href="#customers" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 px-3 rounded-lg text-slate-200 hover:text-blue-400 hover:bg-[#071527] font-medium transition-colors">Customers</a>
           <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block py-2.5 px-3 rounded-lg text-slate-200 hover:text-blue-400 hover:bg-[#071527] font-medium transition-colors">Contact</a>
-          
+
           <div className="pt-3 border-t border-blue-900/40 flex flex-col gap-2">
             <Link to="/welcome" onClick={() => setMobileMenuOpen(false)} className="w-full py-2.5 text-center text-xs font-semibold bg-[#071527] border border-blue-900/60 rounded-lg text-blue-400 block">
               Mobile App Welcome Flow

@@ -26,7 +26,6 @@ function ResetPassword() {
 
     setLoading(true);
 
-    // Simulate password update
     setTimeout(() => {
       setLoading(false);
       setSuccess(true);
@@ -38,14 +37,12 @@ function ResetPassword() {
 
   return (
     <div className="min-h-screen bg-[#071527] text-white flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      
-      {/* Background Subtle Gradient Lighting */}
+
       <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[130px] pointer-events-none" />
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 px-4">
-        
-        {/* Brand Header */}
+
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-3 select-none mb-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -92,9 +89,8 @@ function ResetPassword() {
           </p>
         </div>
 
-        {/* Card */}
         <div className="rounded-3xl bg-[#0a1d36]/95 border border-blue-800/60 p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
-          
+
           {errorMessage && (
             <div className="mb-5 p-3.5 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 text-xs font-medium flex items-start gap-2.5">
               <svg className="w-4 h-4 flex-shrink-0 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,8 +122,7 @@ function ResetPassword() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              
-              {/* New Password */}
+
               <div>
                 <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                   New Password
@@ -154,7 +149,6 @@ function ResetPassword() {
                 </div>
               </div>
 
-              {/* Confirm New Password */}
               <div>
                 <label className="block text-slate-300 font-bold uppercase tracking-wider mb-1.5">
                   Confirm New Password
@@ -169,7 +163,6 @@ function ResetPassword() {
                 />
               </div>
 
-              {/* Security Checklist (Direct React JSX structure, no JSON arrays) */}
               <div className="p-3.5 rounded-xl bg-[#071527] border border-blue-900/60 text-[11px] text-slate-300 space-y-1.5 mt-2">
                 <div className="font-semibold text-slate-400 uppercase text-[10px] tracking-wider mb-1">
                   Password Requirements:
@@ -188,7 +181,6 @@ function ResetPassword() {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
@@ -210,7 +202,6 @@ function ResetPassword() {
             </form>
           )}
 
-          {/* Back to Login */}
           <div className="mt-6 pt-5 border-t border-blue-900/50 text-center text-xs text-slate-400">
             Cancel and return to{' '}
             <Link to="/login" className="text-blue-400 hover:text-white font-bold transition-colors">

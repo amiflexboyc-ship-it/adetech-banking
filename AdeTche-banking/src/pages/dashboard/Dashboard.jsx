@@ -19,7 +19,6 @@ function Dashboard() {
   useEffect(() => {
     let isMounted = true;
 
-    // Load customer transactions
     api.transactions.getAll()
       .then((res) => {
         if (isMounted && res && res.transactions) {
@@ -28,7 +27,6 @@ function Dashboard() {
       })
       .catch(() => { });
 
-    // Load customer cards
     api.account.getCards()
       .then((res) => {
         if (isMounted && res && res.cards) {
@@ -57,7 +55,6 @@ function Dashboard() {
   return (
     <div className="space-y-6">
 
-      {/* Top Banner: Digital Account Card */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a1d36] via-[#0d2545] to-[#071527] border border-blue-800/60 p-6 sm:p-8 shadow-2xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -107,7 +104,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Quick Actions Action Block */}
           <div className="grid grid-cols-2 gap-3 w-full lg:w-auto">
             <Link
               to="/dashboard/transfer"
@@ -152,10 +148,8 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* Cards & Summary Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        {/* Left Column: Virtual Cards Quick View (lg:col-span-5) */}
         <div className="lg:col-span-5 p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-display font-bold text-base text-white">Active Payment Cards</h3>
@@ -164,7 +158,6 @@ function Dashboard() {
             </Link>
           </div>
 
-          {/* Virtual Dollar Card */}
           <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-tr from-blue-900 via-blue-800 to-indigo-950 border border-blue-500/40 shadow-xl text-white">
             <div className="flex items-center justify-between mb-6">
               <span className="text-[11px] font-bold tracking-wider uppercase text-blue-200">AdeTech Virtual USD</span>
@@ -185,7 +178,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Physical Metal Card */}
           <div className="relative overflow-hidden p-5 rounded-2xl bg-gradient-to-tr from-slate-900 via-[#0d2545] to-slate-800 border border-slate-700/60 shadow-xl text-white">
             <div className="flex items-center justify-between mb-6">
               <span className="text-[11px] font-bold tracking-wider uppercase text-slate-300">AdeTech Metal NGN</span>
@@ -207,7 +199,6 @@ function Dashboard() {
           </div>
         </div>
 
-        {/* Right Column: Recent Transactions Stream (lg:col-span-7) */}
         <div className="lg:col-span-7 p-6 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">
@@ -217,7 +208,6 @@ function Dashboard() {
               </Link>
             </div>
 
-            {/* Direct React JSX Transaction Entries with Live Dynamic State Fallback */}
             <div className="space-y-3">
               {transactions && transactions.length > 0 ? (
                 transactions.slice(0, 3).map((tx) => {
@@ -269,7 +259,7 @@ function Dashboard() {
                 })
               ) : (
                 <>
-                  {/* Transaction 1 */}
+
                   <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
@@ -288,7 +278,6 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  {/* Transaction 2 */}
                   <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 flex items-center justify-center">
@@ -307,7 +296,6 @@ function Dashboard() {
                     </div>
                   </div>
 
-                  {/* Transaction 3 */}
                   <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 flex items-center justify-center">

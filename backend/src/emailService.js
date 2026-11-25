@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-
 let transporter = null;
 
 const createTransporter = () => {
@@ -40,7 +39,7 @@ const createTransporter = () => {
     });
     console.log(`[Email Service] Configured Gmail SMTP for ${EMAIL_USER}`);
   } else {
-    // Development fallback logger transporter
+
     transporter = {
       sendMail: async (mailOptions) => {
         console.log(`\n======================================================`);
@@ -70,9 +69,6 @@ const getSender = () => {
   return process.env.EMAIL_FROM || '"AdeTech Digital Bank" <no-reply@adetechbank.com>';
 };
 
-/**
- * Base email layout matching corporate navy aesthetic (#071527, #0a1d36, #2563eb, #06b6d4)
- */
 const buildEmailTemplate = ({ title, preheader, bodyHtml }) => {
   return `
 <!DOCTYPE html>
@@ -212,9 +208,7 @@ const buildEmailTemplate = ({ title, preheader, bodyHtml }) => {
 };
 
 export const emailService = {
-  /**
-   * Send 6-digit Transfer Authorization OTP
-   */
+
   sendTransferOTP: async (email, name, otp, amount, recipientName) => {
     const client = createTransporter();
     const recipient = name || 'Customer';
@@ -254,9 +248,6 @@ export const emailService = {
     });
   },
 
-  /**
-   * Send 6-digit Registration / Email Verification OTP
-   */
   sendVerificationOTP: async (email, name, otp) => {
     const client = createTransporter();
     const recipientName = name || 'Valued Customer';
@@ -296,9 +287,6 @@ export const emailService = {
     });
   },
 
-  /**
-   * Send Account Welcome & Onboarding Confirmation
-   */
   sendWelcomeEmail: async (email, name, accountNumber) => {
     const client = createTransporter();
     const recipientName = name || 'Valued Customer';
@@ -342,9 +330,6 @@ export const emailService = {
     });
   },
 
-  /**
-   * Send Password Recovery OTP
-   */
   sendPasswordResetOTP: async (email, name, otp) => {
     const client = createTransporter();
     const recipientName = name || 'Customer';
@@ -384,9 +369,6 @@ export const emailService = {
     });
   },
 
-  /**
-   * Send Instant Transaction Alert
-   */
   sendTransactionAlert: async (email, name, txn) => {
     const client = createTransporter();
     const isCredit = txn.type === 'credit';
@@ -435,9 +417,6 @@ export const emailService = {
     });
   },
 
-  /**
-   * Generic Mail Sender
-   */
   sendCustomMail: async ({ to, subject, html, text }) => {
     const client = createTransporter();
     return client.sendMail({

@@ -1,25 +1,9 @@
 import https from 'https';
 
-/**
- * Paystack Service for Real Nigerian Bank Account Name Resolution
- * 
- * Legitimate integration with Paystack API:
- * - Bank List: https://api.paystack.co/bank?country=nigeria
- * - Account Resolution: https://api.paystack.co/bank/resolve?account_number=...&bank_code=...
- * - Test Mode Resolution: Bank Code 001 for unlimited test resolves
- * 
- * Strict Banking Standards:
- * - Real API integration only; no simulated or fake names.
- * - Secret keys kept exclusively on the backend (process.env.PAYSTACK_SECRET_KEY).
- * - Comprehensive mapping of official Nigerian CBN bank codes used by Paystack.
- */
-
-// Comprehensive built-in catalog of Paystack Nigerian bank codes
 const NIGERIAN_BANK_CATALOG = [
   { name: 'AdeTech Banking', code: '090', isInternal: true, category: 'Core Network' },
   { name: 'Paystack Sandbox Test Bank', code: '001', isTestBank: true, category: 'Sandbox / Test Bank (Unlimited)' },
 
-  // Commercial Banks
   { name: 'Access Bank', code: '044', category: 'Commercial Bank' },
   { name: 'Access Bank (Diamond)', code: '063', category: 'Commercial Bank' },
   { name: 'Citibank Nigeria', code: '023', category: 'Commercial Bank' },
@@ -49,7 +33,6 @@ const NIGERIAN_BANK_CATALOG = [
   { name: 'Wema Bank', code: '035', category: 'Commercial Bank' },
   { name: 'Zenith Bank', code: '057', category: 'Commercial Bank' },
 
-  // Digital Banks, Fintechs & Payment Service Banks
   { name: 'OPay Digital Services', code: '999992', category: 'Digital Bank / PSB' },
   { name: 'Palmpay Limited', code: '999991', category: 'Digital Bank / PSB' },
   { name: 'Moniepoint Microfinance Bank', code: '50515', category: 'Digital Bank / PSB' },
@@ -69,20 +52,17 @@ const NIGERIAN_BANK_CATALOG = [
   { name: 'MoMo Payment Service Bank', code: '120003', category: 'Digital Bank / PSB' },
   { name: 'Smartcash Payment Service Bank', code: '120004', category: 'Digital Bank / PSB' },
 
-  // Non-Interest & Islamic Banks
   { name: 'Jaiz Bank', code: '301', category: 'Non-Interest Bank' },
   { name: 'TAJBank', code: '302', category: 'Non-Interest Bank' },
   { name: 'Lotus Bank', code: '303', category: 'Non-Interest Bank' },
   { name: 'Alterna Bank', code: '304', category: 'Non-Interest Bank' },
 
-  // Merchant Banks
   { name: 'Coronation Merchant Bank', code: '559', category: 'Merchant Bank' },
   { name: 'FBNQuest Merchant Bank', code: '560', category: 'Merchant Bank' },
   { name: 'FSDH Merchant Bank', code: '501', category: 'Merchant Bank' },
   { name: 'Greenwich Merchant Bank', code: '562', category: 'Merchant Bank' },
   { name: 'Rand Merchant Bank', code: '502', category: 'Merchant Bank' },
 
-  // Microfinance & Mortgage Banks
   { name: 'Accion Microfinance Bank', code: '602', category: 'Microfinance & Mortgage' },
   { name: 'LAPO Microfinance Bank', code: '50400', category: 'Microfinance & Mortgage' },
   { name: 'Mutual Trust Microfinance Bank', code: '50563', category: 'Microfinance & Mortgage' },
@@ -102,12 +82,9 @@ class PaystackService {
   constructor() {
     this.cachedBanks = null;
     this.lastBankFetch = 0;
-    this.CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+    this.CACHE_DURATION = 24 * 60 * 60 * 1000;
   }
 
-  /**
-   * Check if Paystack Secret Key is configured in environment
-   */
   hasSecretKey() {
     const key = process.env.PAYSTACK_SECRET_KEY;
     return Boolean(
@@ -118,24 +95,15 @@ class PaystackService {
     );
   }
 
-  /**
-   * Check if running with a Paystack Test Key
-   */
   isTestKey() {
     const key = this.getSecretKey();
     return key.startsWith('sk_test_');
   }
 
-  /**
-   * Get Paystack Secret Key
-   */
   getSecretKey() {
     return process.env.PAYSTACK_SECRET_KEY?.trim() || '';
   }
 
-  /**
-   * Fetch live Nigerian bank list from Paystack
-   */
   async fetchLiveBanks() {
     const now = Date.now();
     if (this.cachedBanks && now - this.lastBankFetch < this.CACHE_DURATION) {
@@ -150,20 +118,17 @@ class PaystackService {
         return this.cachedBanks;
       }
     } catch {
-      // Fall back to built-in catalog if network fails
+
     }
 
     return this.cachedBanks || [];
   }
 
-  /**
-   * Retrieve all supported Nigerian banks for transfer selection
-   */
   async getSupportedBanks() {
     try {
       const liveBanks = await this.fetchLiveBanks();
       if (liveBanks && liveBanks.length > 0) {
-        // Map live banks and prepend AdeTech Banking and Paystack Sandbox Bank
+
         const mappedLive = liveBanks
           .filter((b) => b.active !== false && b.code !== '001')
           .map((b) => ({
@@ -181,15 +146,12 @@ class PaystackService {
         ];
       }
     } catch {
-      // Fallback
+
     }
 
     return NIGERIAN_BANK_CATALOG;
   }
 
-  /**
-   * Categorize bank for organized UI display
-   */
   categorizeBank(name, type) {
     const lower = name.toLowerCase();
     if (lower.includes('sandbox') || lower.includes('test bank')) {
@@ -210,9 +172,6 @@ class PaystackService {
     return 'Commercial Bank';
   }
 
-  /**
-   * Resolve bank code from bank name or code
-   */
   getBankCode(bankName, bankCode) {
     if (bankCode && String(bankCode).trim().length >= 3) {
       return String(bankCode).trim();
@@ -221,7 +180,6 @@ class PaystackService {
     if (!bankName) return null;
     const cleanName = bankName.trim().toLowerCase();
 
-    // Check built-in catalog first
     const catalogMatch = NIGERIAN_BANK_CATALOG.find((b) => {
       const bLower = b.name.toLowerCase();
       return (
@@ -235,7 +193,6 @@ class PaystackService {
       return catalogMatch.code;
     }
 
-    // Check cached live banks if available
     if (this.cachedBanks) {
       const liveMatch = this.cachedBanks.find((b) => {
         const bLower = b.name.toLowerCase();
@@ -251,13 +208,6 @@ class PaystackService {
     return null;
   }
 
-  /**
-   * Send account number & bank code to Paystack Account Name Resolution API
-   * 
-   * @param {string} accountNumber 10-digit NUBAN
-   * @param {string} bankCode Paystack bank code (e.g. 058 for GTBank, 044 for Access, 001 for Sandbox Test Bank)
-   * @returns {Promise<{accountName: string, accountNumber: string, isTestModeLimit?: boolean}>}
-   */
   async resolveAccountNumber(accountNumber, bankCode) {
     const cleanAcc = String(accountNumber || '').trim();
     const cleanCode = String(bankCode || '').trim();
@@ -270,7 +220,6 @@ class PaystackService {
       throw new Error('Destination bank code is required for account resolution.');
     }
 
-    // Check if secret key is present
     if (!this.hasSecretKey()) {
       const error = new Error(
         'Real-time bank verification requires a configured PAYSTACK_SECRET_KEY in backend/.env. Please configure your Paystack live or test secret key to resolve external Nigerian bank accounts.'
@@ -300,7 +249,7 @@ class PaystackService {
       const msg = response?.message || 'Could not resolve account name. Please verify the account number and bank.';
       throw new Error(msg);
     } catch (err) {
-      // Handle Paystack Test Mode Limit (3 live bank resolves daily limit exceeded on test keys)
+
       const isDailyLimitExceeded =
         err.message &&
         (err.message.includes('limit of 3 live bank resolves exceeded') ||
@@ -308,7 +257,7 @@ class PaystackService {
          err.message.includes('upgrade to live mode'));
 
       if (this.isTestKey() && isDailyLimitExceeded) {
-        // Automatically resolve using Paystack's official test bank code 001 for unlimited test verification
+
         try {
           const testPath = `/bank/resolve?account_number=${encodeURIComponent(cleanAcc)}&bank_code=001`;
           const testResponse = await this.makeHttpsRequest('api.paystack.co', testPath, 'GET', null, true, secretKey);
@@ -321,7 +270,7 @@ class PaystackService {
             };
           }
         } catch {
-          // If even test code 001 fails, throw informative message
+
         }
 
         const limitError = new Error(
@@ -335,9 +284,6 @@ class PaystackService {
     }
   }
 
-  /**
-   * Low-level HTTPS request wrapper
-   */
   makeHttpsRequest(hostname, path, method = 'GET', body = null, requireAuth = false, secretKey = '') {
     return new Promise((resolve, reject) => {
       const headers = {

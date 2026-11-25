@@ -81,7 +81,6 @@ function DashboardWelcome() {
   const [slide, setSlide] = useState(0);
   const [animating, setAnimating] = useState(false);
 
-  // Auto-advance slides every 4 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setSlide((prev) => (prev + 1) % SLIDES.length);
@@ -108,7 +107,6 @@ function DashboardWelcome() {
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-4 py-10">
 
-      {/* Greeting Banner */}
       <div className="w-full max-w-3xl mb-8 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/50 border border-blue-500/30 text-blue-300 text-xs font-bold uppercase tracking-widest mb-4">
           <span className="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
@@ -122,21 +120,19 @@ function DashboardWelcome() {
         </p>
       </div>
 
-      {/* Feature Slideshow */}
       <div className="w-full max-w-3xl mb-8">
         <div
           className={`relative overflow-hidden rounded-3xl bg-gradient-to-br ${current.accent} border ${current.border} bg-[#0a1d36] p-8 sm:p-12 shadow-2xl transition-opacity duration-200 ${animating ? 'opacity-0' : 'opacity-100'}`}
         >
-          {/* Glow */}
+
           <div className="absolute top-0 right-0 w-72 h-72 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-8">
-            {/* Icon */}
+
             <div className="flex-shrink-0 w-24 h-24 rounded-2xl bg-[#071527] border border-blue-900/70 flex items-center justify-center shadow-xl">
               {current.icon}
             </div>
 
-            {/* Text */}
             <div className="flex-1 text-center sm:text-left">
               <div className="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2">
                 Feature {slide + 1} of {SLIDES.length}
@@ -150,7 +146,6 @@ function DashboardWelcome() {
             </div>
           </div>
 
-          {/* Dot Indicators */}
           <div className="relative z-10 flex items-center justify-center sm:justify-start gap-2 mt-8">
             {SLIDES.map((_, idx) => (
               <button
@@ -169,7 +164,6 @@ function DashboardWelcome() {
         </div>
       </div>
 
-      {/* Stats Row */}
       <div className="w-full max-w-3xl grid grid-cols-3 gap-4 mb-10">
         <div className="rounded-2xl bg-[#0a1d36] border border-blue-900/50 p-4 text-center shadow">
           <div className="text-xs text-slate-400 uppercase tracking-wider mb-1">Instant Transfer</div>
@@ -188,7 +182,6 @@ function DashboardWelcome() {
         </div>
       </div>
 
-      {/* CTA Button */}
       <div className="flex flex-col sm:flex-row items-center gap-4">
         <button
           type="button"

@@ -2,11 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import api from '../../api';
 
-// Built-in Nigerian Bank Catalog fallback with Paystack CBN codes
 const DEFAULT_BANKS = [
   { name: 'AdeTech Banking', code: '090', isInternal: true, category: 'Core Network' },
   { name: 'Paystack Sandbox Test Bank', code: '001', isTestBank: true, category: 'Sandbox / Test Bank (Unlimited)' },
-  // Commercial Banks
+
   { name: 'Access Bank', code: '044', category: 'Commercial Bank' },
   { name: 'Citibank Nigeria', code: '023', category: 'Commercial Bank' },
   { name: 'Ecobank Nigeria', code: '050', category: 'Commercial Bank' },
@@ -35,7 +34,6 @@ const DEFAULT_BANKS = [
   { name: 'Wema Bank', code: '035', category: 'Commercial Bank' },
   { name: 'Zenith Bank', code: '057', category: 'Commercial Bank' },
 
-  // Digital Banks & Fintechs
   { name: 'OPay Digital Services', code: '999992', category: 'Digital Bank / PSB' },
   { name: 'Palmpay Limited', code: '999991', category: 'Digital Bank / PSB' },
   { name: 'Moniepoint Microfinance Bank', code: '50515', category: 'Digital Bank / PSB' },
@@ -55,20 +53,17 @@ const DEFAULT_BANKS = [
   { name: 'MoMo Payment Service Bank', code: '120003', category: 'Digital Bank / PSB' },
   { name: 'Smartcash Payment Service Bank', code: '120004', category: 'Digital Bank / PSB' },
 
-  // Non-Interest Banks
   { name: 'Jaiz Bank', code: '301', category: 'Non-Interest Bank' },
   { name: 'TAJBank', code: '302', category: 'Non-Interest Bank' },
   { name: 'Lotus Bank', code: '303', category: 'Non-Interest Bank' },
   { name: 'Alterna Bank', code: '304', category: 'Non-Interest Bank' },
 
-  // Merchant Banks
   { name: 'Coronation Merchant Bank', code: '559', category: 'Merchant Bank' },
   { name: 'FBNQuest Merchant Bank', code: '560', category: 'Merchant Bank' },
   { name: 'FSDH Merchant Bank', code: '501', category: 'Merchant Bank' },
   { name: 'Greenwich Merchant Bank', code: '562', category: 'Merchant Bank' },
   { name: 'Rand Merchant Bank', code: '502', category: 'Merchant Bank' },
 
-  // Microfinance & Mortgage Banks
   { name: 'Accion Microfinance Bank', code: '602', category: 'Microfinance & Mortgage' },
   { name: 'LAPO Microfinance Bank', code: '50400', category: 'Microfinance & Mortgage' },
   { name: 'Mutual Trust Microfinance Bank', code: '50563', category: 'Microfinance & Mortgage' },
@@ -96,10 +91,8 @@ function SendMoney() {
   const setUser = context?.setUser;
   const navigate = useNavigate();
 
-  // Current Wizard Stage: 1 = Beneficiary, 2 = Amount & Narration, 3 = Confirmation, 4 = PIN & OTP, 5 = Receipt
   const [currentStep, setCurrentStep] = useState(1);
 
-  // Bank & Account State (Steps 1, 2, 3)
   const [supportedBanks, setSupportedBanks] = useState(DEFAULT_BANKS);
   const [recipientBank, setRecipientBank] = useState('AdeTech Banking');
   const [recipientBankCode, setRecipientBankCode] = useState('090');
@@ -108,11 +101,9 @@ function SendMoney() {
   const [verifyingAccount, setVerifyingAccount] = useState(false);
   const [verificationError, setVerificationError] = useState('');
 
-  // Amount & Narration State (Steps 4, 5)
   const [amount, setAmount] = useState('');
   const [narration, setNarration] = useState('');
 
-  // Security & Authorization State (Steps 7, 8, 9)
   const [hasPin, setHasPin] = useState(true);
   const [pin, setPin] = useState('');
   const [pinConfirm, setPinConfirm] = useState('');
@@ -125,25 +116,20 @@ function SendMoney() {
   const [resendCount, setResendCount] = useState(0);
   const [devOtp, setDevOtp] = useState('');
 
-  // Processing & Errors
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [receiptToast, setReceiptToast] = useState('');
 
-  // Completed Receipt (Step 10)
   const [receipt, setReceipt] = useState(null);
 
-  // Idempotency token to prevent duplicate double-spend submissions
   const idempotencyKeyRef = useRef(`IDEMP-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`);
 
-  // Calculate dynamic fees: ₦0.00 for AdeTech, ₦10.75 for inter-bank
   const isInternalTransfer = recipientBank === 'AdeTech Banking' || recipientBankCode === '090';
   const transactionFee = isInternalTransfer ? 0.00 : 10.75;
   const numericAmount = parseFloat(amount) || 0;
   const totalDebitAmount = numericAmount + transactionFee;
   const availableBalance = Number(user?.balance ?? 1450000);
 
-  // Load supported banks from backend Paystack directory
   useEffect(() => {
     let isMounted = true;
     api.transactions
@@ -154,10 +140,9 @@ function SendMoney() {
         }
       })
       .catch(() => {
-        // Fall back to DEFAULT_BANKS
+
       });
 
-    // Check customer PIN status on load
     api.transactions
       .getPinStatus()
       .then((res) => {
@@ -175,7 +160,6 @@ function SendMoney() {
     };
   }, []);
 
-  // OTP Countdown Timer
   useEffect(() => {
     let timerId;
     if (otpSent && otpCountdown > 0) {
@@ -190,9 +174,6 @@ function SendMoney() {
     };
   }, [otpSent, otpCountdown]);
 
-  // ---------------------------------------------------------------------------
-  // STEP 2 & 3: Account Number Input & Automated Verification
-  // ---------------------------------------------------------------------------
   const handleAccountChange = (e) => {
     const val = e.target.value.replace(/\D/g, '').slice(0, 10);
     setAccountNumber(val);
@@ -200,7 +181,6 @@ function SendMoney() {
     setVerificationError('');
     setErrorMessage('');
 
-    // Trigger backend verification as soon as exactly 10 numeric digits are entered
     if (val.length === 10) {
       performAccountVerification(val, recipientBank, recipientBankCode);
     }
@@ -258,7 +238,6 @@ function SendMoney() {
     performAccountVerification('0907710898', 'AdeTech Banking', '090');
   };
 
-  // Continue to Step 4 (Amount)
   const handleProceedToAmount = (e) => {
     e.preventDefault();
     if (!verifiedBeneficiary) {
@@ -269,9 +248,6 @@ function SendMoney() {
     setCurrentStep(2);
   };
 
-  // ---------------------------------------------------------------------------
-  // STEP 4 & 5: Transfer Amount & Narration Validation
-  // ---------------------------------------------------------------------------
   const handleAmountChange = (e) => {
     const val = e.target.value.replace(/[^0-9.]/g, '');
     setAmount(val);
@@ -311,15 +287,12 @@ function SendMoney() {
     setCurrentStep(3);
   };
 
-  // ---------------------------------------------------------------------------
-  // STEP 6: Review & Trigger Step 7/8 Security Authorization
-  // ---------------------------------------------------------------------------
   const handleProceedToAuthorization = async () => {
     setErrorMessage('');
     setLoading(true);
 
     try {
-      // Dispatch Transfer Authorization OTP via Backend API
+
       const otpRes = await api.transactions.sendTransferOTP({
         amount: numericAmount,
         recipientName: verifiedBeneficiary?.accountName || 'Beneficiary',
@@ -343,7 +316,6 @@ function SendMoney() {
     }
   };
 
-  // Resend OTP Handler
   const handleResendOtp = async () => {
     if (!canResendOtp) return;
 
@@ -377,7 +349,6 @@ function SendMoney() {
     }
   };
 
-  // OTP Input Boxes
   const handleOtpDigitChange = (index, value) => {
     const digit = value.replace(/\D/g, '').slice(-1);
     const updated = [...otp];
@@ -397,14 +368,10 @@ function SendMoney() {
     }
   };
 
-  // ---------------------------------------------------------------------------
-  // STEP 9: Final Process Transfer
-  // ---------------------------------------------------------------------------
   const handleFinalSubmitTransfer = async (e) => {
     e.preventDefault();
     setErrorMessage('');
 
-    // If customer is creating a PIN on first transfer
     if (isCreatingPin) {
       if (!/^\d{4}$/.test(pin)) {
         setErrorMessage('Transaction PIN must be exactly 4 numeric digits.');
@@ -450,7 +417,7 @@ function SendMoney() {
       });
 
       if (response && response.success) {
-        // Update user state ONLY after confirmed successful processing
+
         if (response.newBalance !== undefined && setUser) {
           setUser((prev) => ({ ...prev, balance: response.newBalance }));
         }
@@ -461,7 +428,7 @@ function SendMoney() {
         setErrorMessage(response?.message || 'Transfer could not be processed. Balance has not been debited.');
       }
     } catch (err) {
-      // On failure, customer's balance is NEVER reduced
+
       setErrorMessage(
         err.message || 'Transfer failed on settlement rail. Your account balance remains unchanged.'
       );
@@ -470,9 +437,6 @@ function SendMoney() {
     }
   };
 
-  // ---------------------------------------------------------------------------
-  // STEP 10: Receipt Actions (Download & Share)
-  // ---------------------------------------------------------------------------
   const handleDownloadReceipt = () => {
     if (!receipt) return;
 
@@ -566,8 +530,7 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
-      
-      {/* Top Header & Real-time Balance */}
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-blue-900/50 gap-2">
         <div>
           <h1 className="font-display text-2xl font-extrabold text-white">Instant Money Transfer</h1>
@@ -581,12 +544,10 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </div>
       </div>
 
-      {/* 5-Stage Step Progress Indicator */}
       {currentStep < 5 && (
         <div className="p-4 rounded-2xl bg-[#0a1d36] border border-blue-900/60 shadow-lg">
           <div className="flex items-center justify-between relative">
-            
-            {/* Step 1 Indicator */}
+
             <div className="flex flex-col items-center z-10">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
@@ -604,10 +565,8 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               </span>
             </div>
 
-            {/* Connecting Line 1 */}
             <div className={`flex-1 h-0.5 mx-1 transition-colors ${currentStep > 1 ? 'bg-emerald-600' : 'bg-blue-950'}`} />
 
-            {/* Step 2 Indicator */}
             <div className="flex flex-col items-center z-10">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
@@ -625,10 +584,8 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               </span>
             </div>
 
-            {/* Connecting Line 2 */}
             <div className={`flex-1 h-0.5 mx-1 transition-colors ${currentStep > 2 ? 'bg-emerald-600' : 'bg-blue-950'}`} />
 
-            {/* Step 3 Indicator */}
             <div className="flex flex-col items-center z-10">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
@@ -646,10 +603,8 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               </span>
             </div>
 
-            {/* Connecting Line 3 */}
             <div className={`flex-1 h-0.5 mx-1 transition-colors ${currentStep > 3 ? 'bg-emerald-600' : 'bg-blue-950'}`} />
 
-            {/* Step 4 Indicator */}
             <div className="flex flex-col items-center z-10">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
@@ -669,7 +624,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </div>
       )}
 
-      {/* Error Banner */}
       {errorMessage && (
         <div className="p-4 rounded-2xl bg-rose-950/80 border border-rose-500/40 text-rose-300 text-xs flex items-start gap-2.5 animate-in fade-in">
           <svg className="w-4 h-4 text-rose-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -679,19 +633,15 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </div>
       )}
 
-      {/* Toast Notification */}
       {receiptToast && (
         <div className="p-3 rounded-xl bg-blue-900 border border-blue-400/50 text-white text-xs text-center animate-in fade-in">
           {receiptToast}
         </div>
       )}
 
-      {/* =======================================================================
-          STAGE 1: BENEFICIARY SELECTION (STEPS 1, 2, 3)
-         ======================================================================= */}
       {currentStep === 1 && (
         <form onSubmit={handleProceedToAmount} className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-6 animate-in fade-in">
-          
+
           <div className="flex items-center gap-2 pb-3 border-b border-blue-900/40 text-sm font-bold text-white">
             <span className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center text-xs">
               1
@@ -699,7 +649,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             <span>Select Destination Bank & Account</span>
           </div>
 
-          {/* STEP 1: Destination Bank Selection */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">Destination Bank</label>
@@ -777,7 +726,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </select>
           </div>
 
-          {/* STEP 2: Account Number Entry */}
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-300">10-Digit NUBAN Account Number</label>
             <div className="relative">
@@ -801,7 +749,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               )}
             </div>
 
-            {/* STEP 3: Automated Real Account Verification Display */}
             {verifiedBeneficiary && (
               <div className="space-y-2 animate-in fade-in">
                 <div className="p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-500/50 flex items-center justify-between">
@@ -833,7 +780,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               </div>
             )}
 
-            {/* Meaningful Verification Error Guidance */}
             {verificationError && (
               <div className="space-y-3 animate-in fade-in">
                 <div className="p-3.5 rounded-xl bg-rose-950/70 border border-rose-600/40 text-rose-300 text-xs flex items-start gap-2.5">
@@ -843,7 +789,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
                   <span className="leading-relaxed">{verificationError}</span>
                 </div>
 
-                {/* Interactive Test Limit Resolution Helper */}
                 {(verificationError.includes('limit of 3 live bank resolves') ||
                   verificationError.includes('001') ||
                   verificationError.includes('PAYSTACK_TEST_LIMIT_EXCEEDED') ||
@@ -897,7 +842,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             )}
           </div>
 
-          {/* Action Buttons */}
           <div className="pt-2">
             <button
               type="submit"
@@ -914,12 +858,9 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </form>
       )}
 
-      {/* =======================================================================
-          STAGE 2: AMOUNT & NARRATION (STEPS 4, 5)
-         ======================================================================= */}
       {currentStep === 2 && (
         <form onSubmit={handleProceedToReview} className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-6 animate-in fade-in">
-          
+
           <div className="flex items-center gap-2 pb-3 border-b border-blue-900/40 text-sm font-bold text-white">
             <span className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center text-xs">
               2
@@ -927,7 +868,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             <span>Specify Transfer Amount & Narration</span>
           </div>
 
-          {/* Beneficiary Badge */}
           <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between text-xs">
             <div>
               <div className="text-[11px] text-slate-400">Paying Beneficiary</div>
@@ -945,7 +885,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </button>
           </div>
 
-          {/* STEP 4: Transfer Amount Entry */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">Transfer Amount (NGN)</label>
@@ -966,7 +905,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               />
             </div>
 
-            {/* Quick Amount Pills */}
             <div className="flex flex-wrap gap-2 pt-1">
               {[5000, 10000, 20000, 50000, 100000].map((pillVal) => (
                 <button
@@ -981,7 +919,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </div>
           </div>
 
-          {/* STEP 5: Payment Narration */}
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-slate-300">Payment Description / Narration (Optional)</label>
             <input
@@ -994,7 +931,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             />
           </div>
 
-          {/* Navigation Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <button
               type="button"
@@ -1018,12 +954,9 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </form>
       )}
 
-      {/* =======================================================================
-          STAGE 3: CONFIRM TRANSFER REVIEW (STEP 6)
-         ======================================================================= */}
       {currentStep === 3 && (
         <div className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-6 animate-in fade-in">
-          
+
           <div className="flex items-center gap-2 pb-3 border-b border-blue-900/40 text-sm font-bold text-white">
             <span className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center text-xs">
               3
@@ -1031,9 +964,8 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             <span>Confirm Transfer Summary</span>
           </div>
 
-          {/* Detailed Review Table */}
           <div className="p-5 rounded-2xl bg-[#071527] border border-blue-900/60 space-y-3.5 text-xs">
-            
+
             <div className="flex items-center justify-between pb-3 border-b border-blue-900/40">
               <span className="text-slate-400">Beneficiary Name</span>
               <span className="font-bold text-white text-sm">{verifiedBeneficiary?.accountName}</span>
@@ -1077,7 +1009,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
 
           </div>
 
-          {/* Security Guarantee Notice */}
           <div className="p-3.5 rounded-xl bg-blue-950/40 border border-blue-800/40 text-[11px] text-slate-300 flex items-start gap-2.5">
             <svg className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
@@ -1087,7 +1018,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </span>
           </div>
 
-          {/* Navigation Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <button
               type="button"
@@ -1118,12 +1048,9 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </div>
       )}
 
-      {/* =======================================================================
-          STAGE 4: SECURITY AUTHORIZATION (STEPS 7, 8, 9)
-         ======================================================================= */}
       {currentStep === 4 && (
         <form onSubmit={handleFinalSubmitTransfer} className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36]/90 border border-blue-900/50 shadow-xl space-y-6 animate-in fade-in">
-          
+
           <div className="flex items-center gap-2 pb-3 border-b border-blue-900/40 text-sm font-bold text-white">
             <span className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center text-xs">
               4
@@ -1131,7 +1058,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             <span>Security Verification & Authorization</span>
           </div>
 
-          {/* Amount Badge */}
           <div className="text-center p-4 rounded-2xl bg-[#071527] border border-blue-900/60">
             <div className="text-xs text-slate-400">Authorizing Settlement Of</div>
             <div className="font-mono text-2xl font-extrabold text-cyan-400 mt-1">
@@ -1142,7 +1068,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </div>
           </div>
 
-          {/* STEP 7: 4-Digit Transaction PIN Entry */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">
@@ -1179,14 +1104,12 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             )}
           </div>
 
-          {/* STEP 8: OTP Verification Code */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="text-xs font-semibold text-slate-300">6-Digit One-Time Password (OTP)</label>
               <span className="text-[11px] text-cyan-400">Sent to {otpDestination || 'your email'}</span>
             </div>
 
-            {/* 6-Segment OTP Input Boxes */}
             <div className="flex justify-between gap-2 max-w-sm mx-auto py-2">
               {[0, 1, 2, 3, 4, 5].map((index) => (
                 <input
@@ -1203,7 +1126,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               ))}
             </div>
 
-            {/* OTP Expiration & Resend */}
             <div className="flex items-center justify-between text-xs pt-1">
               <span className="text-slate-400">
                 {otpCountdown > 0 ? (
@@ -1223,7 +1145,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
               </button>
             </div>
 
-            {/* Development Mode Authorization Code Box */}
             {devOtp && (
               <div className="p-3 rounded-xl bg-blue-950/70 border border-blue-500/40 text-xs text-blue-200 flex items-center justify-between animate-in fade-in">
                 <span>Authorization Code: <strong className="text-white font-mono tracking-widest text-sm">{devOtp}</strong></span>
@@ -1238,7 +1159,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             )}
           </div>
 
-          {/* STEP 9: Action & Submit Buttons */}
           <div className="flex items-center gap-3 pt-2">
             <button
               type="button"
@@ -1275,13 +1195,9 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
         </form>
       )}
 
-      {/* =======================================================================
-          STAGE 5: TRANSACTION RECEIPT (STEP 10)
-         ======================================================================= */}
       {currentStep === 5 && receipt && (
         <div className="p-6 sm:p-8 rounded-3xl bg-[#0a1d36] border border-emerald-500/50 shadow-2xl space-y-6 animate-in fade-in">
-          
-          {/* Green Successful Transaction Indicator */}
+
           <div className="text-center space-y-2">
             <div className="w-16 h-16 rounded-full bg-emerald-950/90 border-2 border-emerald-500 mx-auto flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/20">
               <svg className="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1294,7 +1210,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </p>
           </div>
 
-          {/* Amount Hero */}
           <div className="text-center py-3 bg-[#071527] rounded-2xl border border-blue-900/60">
             <div className="text-xs text-slate-400 uppercase tracking-wider font-semibold">Total Amount Transferred</div>
             <div className="font-mono text-3xl font-extrabold text-emerald-400 mt-1">
@@ -1302,9 +1217,8 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </div>
           </div>
 
-          {/* Detailed Receipt Breakdown */}
           <div className="p-5 rounded-2xl bg-[#071527] border border-blue-900/60 space-y-3 text-xs">
-            
+
             <div className="flex items-center justify-between pb-2 border-b border-blue-900/40">
               <span className="text-slate-400">Recipient Name</span>
               <span className="font-bold text-white text-right">{receipt.recipientName}</span>
@@ -1351,7 +1265,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
 
           </div>
 
-          {/* Action Buttons: Download Receipt & Share Receipt */}
           <div className="grid grid-cols-2 gap-3 pt-1">
             <button
               type="button"
@@ -1376,7 +1289,6 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </button>
           </div>
 
-          {/* Navigation Controls */}
           <div className="flex gap-3 pt-2">
             <button
               type="button"
