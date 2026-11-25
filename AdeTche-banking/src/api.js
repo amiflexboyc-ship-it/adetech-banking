@@ -1,7 +1,19 @@
+const normalizeApiUrl = (url) => {
+  const cleaned = url.trim().replace(/\/+$/, '');
+  return cleaned.endsWith('/api') ? cleaned : `${cleaned}/api`;
+};
+
 const getApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes('your-render-url')) {
+    return normalizeApiUrl(envUrl);
+  }
   if (typeof window !== 'undefined' && window.location.hostname) {
-    return `http://${window.location.hostname}:5000/api`;
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1' || /^\d+\.\d+\.\d+\.\d+$/.test(host)) {
+      return `http://${host}:5000/api`;
+    }
+    return 'https://adetech-banking-backend.onrender.com/api';
   }
   return 'http://localhost:5000/api';
 };
