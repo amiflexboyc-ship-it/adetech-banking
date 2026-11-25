@@ -55,7 +55,9 @@ function Register() {
 
       setSuccessMessage('Account registered successfully! Redirecting to email verification...');
       setTimeout(() => {
-        navigate('/verify-email', { state: { email: formData.email } });
+        navigate('/verify-email', {
+          state: { email: formData.email, devOtp: response?.devOtp || null }
+        });
       }, 1500);
     } catch (err) {
 

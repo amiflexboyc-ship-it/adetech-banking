@@ -17,6 +17,12 @@ const generateAccountNumber = () => {
   return `09${randomPart.toString().slice(0, 8)}`;
 };
 
+const isSmtpConfigured = () =>
+  Boolean(
+    (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) ||
+      (process.env.EMAIL_USER && process.env.EMAIL_PASS)
+  );
+
 export const authController = {
 
   register: async (req, res) => {
@@ -109,7 +115,8 @@ export const authController = {
         message: 'Account registered successfully. A 6-digit verification code has been dispatched to your email.',
         token,
         user: safeUser,
-        account: newAccount
+        account: newAccount,
+        ...(!isSmtpConfigured() ? { devOtp: otp } : {})
       });
     } catch (err) {
       console.error('[Auth Controller] Registration error:', err);
@@ -215,7 +222,8 @@ export const authController = {
 
       return res.json({
         success: true,
-        message: 'A fresh 6-digit verification code has been dispatched to your email.'
+        message: 'A fresh 6-digit verification code has been dispatched to your email.',
+        ...(!isSmtpConfigured() ? { devOtp: otp } : {})
       });
     } catch (err) {
       console.error('[Auth Controller] Resend OTP error:', err);

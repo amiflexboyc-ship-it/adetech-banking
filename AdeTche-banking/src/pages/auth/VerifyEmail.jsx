@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import api from '../../api';
 
 function VerifyEmail() {
   const location = useLocation();
@@ -7,11 +8,14 @@ function VerifyEmail() {
   const email = location.state?.email || 'your registered email';
 
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
+  const [devOtp, setDevOtp] = useState(location.state?.devOtp || '');
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [infoMessage, setInfoMessage] = useState('');
 
   useEffect(() => {
     if (timer > 0) {
@@ -43,7 +47,7 @@ function VerifyEmail() {
     }
   };
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
     const fullCode = otp.join('');
     if (fullCode.length < 6) {
@@ -51,22 +55,57 @@ function VerifyEmail() {
       return;
     }
 
+    if (!location.state?.email) {
+      setErrorMessage('Missing registration email. Please register or sign in again.');
+      return;
+    }
+
     setErrorMessage('');
+    setInfoMessage('');
     setIsVerifying(true);
 
-    setTimeout(() => {
-      setIsVerifying(false);
+    try {
+      await api.auth.verifyEmail(email, fullCode);
       setSuccess(true);
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
-    }, 1200);
+      }, 1500);
+    } catch (err) {
+      setErrorMessage(err.message || 'Verification failed. Please check the 6-digit code and try again.');
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
-  const handleResend = () => {
-    if (!canResend) return;
-    setTimer(60);
-    setCanResend(false);
+  const handleResend = async () => {
+    if (!canResend || isResending) return;
+    if (!location.state?.email) {
+      setErrorMessage('Missing registration email. Please register again.');
+      return;
+    }
+
+    setErrorMessage('');
+    setInfoMessage('');
+    setIsResending(true);
+
+    try {
+      const res = await api.auth.resendOTP(email);
+      if (res?.devOtp) {
+        setDevOtp(res.devOtp);
+      }
+      setInfoMessage('A new 6-digit verification code has been dispatched.');
+      setTimer(60);
+      setCanResend(false);
+    } catch (err) {
+      setErrorMessage(err.message || 'Could not resend verification code.');
+    } finally {
+      setIsResending(false);
+    }
+  };
+
+  const handleAutoFillOtp = () => {
+    if (!devOtp || devOtp.length !== 6) return;
+    setOtp(devOtp.split(''));
     setErrorMessage('');
   };
 
@@ -211,6 +250,27 @@ function VerifyEmail() {
                   />
                 </div>
               </div>
+
+              {infoMessage && (
+                <div className="p-3 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 text-xs font-medium text-center">
+                  {infoMessage}
+                </div>
+              )}
+
+              {devOtp && (
+                <div className="p-3 rounded-xl bg-blue-950/70 border border-blue-500/40 text-blue-200 text-xs flex items-center justify-between gap-2">
+                  <span>
+                    Verification Code: <strong className="font-mono text-cyan-300">{devOtp}</strong>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleAutoFillOtp}
+                    className="px-2.5 py-1 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition-colors"
+                  >
+                    Auto-fill Code
+                  </button>
+                </div>
+              )}
 
               <button
                 type="submit"
