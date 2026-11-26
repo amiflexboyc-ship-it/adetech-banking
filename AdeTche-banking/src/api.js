@@ -137,6 +137,7 @@ export const api = {
 
   transactions: {
     getAll: () => request('/transactions'),
+    getById: (id) => request(`/transactions/${encodeURIComponent(id)}`),
     getSupportedBanks: () => request('/transactions/supported-banks'),
     verifyAccount: (accountNumber, recipientBank, bankCode) =>
       request('/transactions/verify-account', {

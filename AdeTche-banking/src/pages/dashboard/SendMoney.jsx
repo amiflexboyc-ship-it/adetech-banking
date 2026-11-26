@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import api from '../../api';
+import { downloadReceiptFile, printReceipt } from '../../utils/receipt';
 
 const DEFAULT_BANKS = [
   { name: 'AdeTech Banking', code: '090', isInternal: true, category: 'Core Network' },
@@ -234,8 +235,8 @@ function SendMoney() {
   const handleSelectAdeTechBank = () => {
     setRecipientBank('AdeTech Banking');
     setRecipientBankCode('090');
-    setAccountNumber('0907710898');
-    performAccountVerification('0907710898', 'AdeTech Banking', '090');
+    setAccountNumber('0123456789');
+    performAccountVerification('0123456789', 'AdeTech Banking', '090');
   };
 
   const handleProceedToAmount = (e) => {
@@ -409,6 +410,7 @@ function SendMoney() {
         recipientAccountNumber: accountNumber,
         recipientBank,
         recipientName: verifiedBeneficiary?.accountName || 'Beneficiary',
+        bankCode: recipientBankCode || verifiedBeneficiary?.bankCode,
         amount: numericAmount,
         narration: narration || 'AdeTech Instant Transfer',
         pin,
@@ -439,51 +441,16 @@ function SendMoney() {
 
   const handleDownloadReceipt = () => {
     if (!receipt) return;
+    downloadReceiptFile(receipt, user);
+  };
 
-    const receiptContent = `
-============================================================
-              ADETECH DIGITAL BANKING PLC
-           OFFICIAL TRANSACTION SETTLEMENT RECEIPT
-============================================================
-
-TRANSACTION STATUS     : SUCCESSFUL / COMPLETED
-TRANSACTION REFERENCE  : ${receipt.reference}
-PAYMENT CHANNEL        : ${receipt.channel || (isInternalTransfer ? 'AdeTech Core Ledger' : 'Paystack Electronic Settlement Rail')}
-DATE & TIME            : ${new Date(receipt.date).toUTCString()}
-
-BENEFICIARY DETAILS:
-Account Name           : ${receipt.recipientName}
-Destination Bank       : ${receipt.recipientBank}
-NUBAN Account Number   : ${receipt.recipientAccountNumber}
-
-TRANSACTION SUMMARY:
-Principal Amount       : NGN ${Number(receipt.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 })}
-Transaction Fee        : NGN ${Number(receipt.fee || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}
-Total Debited          : NGN ${Number(receipt.totalDebited || receipt.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 })}
-
-NARRATION / PURPOSE    : ${receipt.description || 'Electronic Funds Transfer'}
-
-SENDER DETAILS:
-Account Holder         : ${user?.name || 'AdeTech Customer'}
-Debit Account          : ${user?.accountNumber || '0907710898'}
-Remaining Balance      : NGN ${Number(user?.balance ?? 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}
-
-============================================================
-All electronic transfers are cleared in compliance with
-Central Bank of Nigeria (CBN) electronic payment mandates.
-Support Desk: amiflexboyc@gmail.com | 09077108987
-============================================================
-    `.trim();
-
-    const blob = new Blob([receiptContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `AdeTech-Receipt-${receipt.reference}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const handlePrintReceipt = () => {
+    if (!receipt) return;
+    const opened = printReceipt(receipt, user);
+    if (!opened) {
+      setReceiptToast('Allow pop-ups to print the official receipt.');
+      setTimeout(() => setReceiptToast(''), 3000);
+    }
   };
 
   const handleShareReceipt = async () => {
@@ -728,6 +695,9 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
 
           <div className="space-y-2">
             <label className="text-xs font-semibold text-slate-300">10-Digit NUBAN Account Number</label>
+            <p className="text-[10px] text-slate-400">
+              Account name is resolved from the destination bank. You cannot type or edit the beneficiary name.
+            </p>
             <div className="relative">
               <input
                 type="text"
@@ -819,7 +789,7 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
                         className="p-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/40 text-left text-[11px] text-white transition-colors cursor-pointer"
                       >
                         <div className="font-semibold text-emerald-300">Option 2: AdeTech Internal Bank</div>
-                        <div className="text-[10px] text-slate-400 mt-0.5">Test real account 0907710898 (₦0.00 fee)</div>
+                        <div className="text-[10px] text-slate-400 mt-0.5">Test ledger account 0123456789 (₦0.00 fee)</div>
                       </button>
                     </div>
                     <div className="text-[10px] text-slate-400 pt-1 border-t border-blue-950">
@@ -1279,8 +1249,18 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
 
             <button
               type="button"
-              onClick={handleShareReceipt}
+              onClick={handlePrintReceipt}
               className="py-3 rounded-xl bg-[#071527] hover:bg-blue-950 border border-blue-800/80 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2"
+            >
+              <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+              </svg>
+              <span>Print Receipt</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleShareReceipt}
+              className="py-3 rounded-xl bg-[#071527] hover:bg-blue-950 border border-blue-800/80 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 col-span-2"
             >
               <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
@@ -1299,10 +1279,10 @@ Support Desk: amiflexboyc@gmail.com | 09077108987
             </button>
             <button
               type="button"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate('/dashboard/transactions')}
               className="px-6 py-3.5 rounded-xl bg-[#071527] hover:bg-blue-950 border border-blue-900/60 text-slate-300 hover:text-white font-bold text-xs transition-colors"
             >
-              Dashboard
+              View History
             </button>
           </div>
 

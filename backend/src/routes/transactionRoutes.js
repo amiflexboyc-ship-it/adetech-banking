@@ -9,6 +9,12 @@ import dojahService from '../services/dojahService.js';
 
 const router = express.Router();
 
+const isSmtpConfigured = () =>
+  Boolean(
+    (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) ||
+      (process.env.EMAIL_USER && process.env.EMAIL_PASS)
+  );
+
 router.get('/', protect, (req, res) => {
   const transactions = db.getTransactionsByUserId(req.user.id);
   return res.json({
@@ -271,13 +277,17 @@ router.post('/send-otp', protect, async (req, res) => {
       lastTransferOTPSentAt: Date.now()
     });
 
-    await emailService.sendTransferOTP(
-      user.email,
-      user.name,
-      otp,
-      amount || 0,
-      recipientName || 'Beneficiary'
-    );
+    emailService
+      .sendTransferOTP(
+        user.email,
+        user.name,
+        otp,
+        amount || 0,
+        recipientName || 'Beneficiary'
+      )
+      .catch((err) => {
+        console.error('Error dispatching transfer OTP email:', err.message);
+      });
 
     const maskedEmail = user.email.replace(/(.{2})(.*)(@.*)/, '$1***$3');
 
@@ -286,7 +296,7 @@ router.post('/send-otp', protect, async (req, res) => {
       message: `A 6-digit transfer authorization code has been dispatched to ${maskedEmail}.`,
       expiresAt: expiresAt.toISOString(),
       destinationEmail: maskedEmail,
-      devOtp: process.env.NODE_ENV !== 'production' ? otp : undefined
+      ...(!isSmtpConfigured() || process.env.NODE_ENV !== 'production' ? { devOtp: otp } : {})
     });
   } catch (err) {
     console.error('Send transfer OTP error:', err);
@@ -303,6 +313,7 @@ router.post('/transfer', protect, async (req, res) => {
       recipientAccountNumber,
       recipientBank = 'AdeTech Banking',
       recipientName,
+      bankCode,
       amount,
       narration,
       pin,
@@ -319,6 +330,13 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
+    if (transferAmount < 100) {
+      return res.status(400).json({
+        success: false,
+        message: 'Minimum transfer amount is ₦100.00.'
+      });
+    }
+
     if (!/^\d{10}$/.test(String(recipientAccountNumber).trim())) {
       return res.status(400).json({
         success: false,
@@ -327,6 +345,7 @@ router.post('/transfer', protect, async (req, res) => {
     }
 
     const cleanAccount = String(recipientAccountNumber).trim();
+    const cleanBank = String(recipientBank || 'AdeTech Banking').trim();
     const user = db.findUserById(req.user.id);
     const senderAccount = db.findAccountByUserId(req.user.id);
 
@@ -349,7 +368,7 @@ router.post('/transfer', protect, async (req, res) => {
       }
     }
 
-    const isInternal = recipientBank === 'AdeTech Banking';
+    const isInternal = cleanBank === 'AdeTech Banking' || bankCode === '090';
     const transactionFee = isInternal ? 0.00 : 10.75;
     const totalRequired = transferAmount + transactionFee;
 
@@ -398,33 +417,118 @@ router.post('/transfer', protect, async (req, res) => {
       });
     }
 
+    let finalBeneficiaryName = recipientName || '';
+    let resolvedBankCode = bankCode || paystackService.getBankCode(cleanBank) || dojahService.getBankCode(cleanBank);
+    let paystackMeta = null;
+    let recipientAccount = null;
+
+    if (isInternal) {
+      recipientAccount = db.findAccountByNumber(cleanAccount);
+      if (!recipientAccount) {
+        return res.status(404).json({
+          success: false,
+          message: 'Account number does not exist on AdeTech Banking ledger. Balance has not been debited.'
+        });
+      }
+
+      if (recipientAccount.userId === user.id) {
+        return res.status(400).json({
+          success: false,
+          message: 'You cannot transfer funds to your own AdeTech account.'
+        });
+      }
+
+      const internalUser = db.findUserById(recipientAccount.userId);
+      if (!internalUser) {
+        return res.status(404).json({
+          success: false,
+          message: 'Beneficiary account profile not found. Balance has not been debited.'
+        });
+      }
+
+      finalBeneficiaryName = internalUser.name.toUpperCase();
+    } else {
+      if (!resolvedBankCode) {
+        return res.status(400).json({
+          success: false,
+          message: `Selected bank "${cleanBank}" is not supported for automated settlement.`
+        });
+      }
+
+      if (!paystackService.hasSecretKey()) {
+        return res.status(503).json({
+          success: false,
+          code: 'PAYSTACK_KEY_MISSING',
+          message: 'Live inter-bank transfer requires a configured PAYSTACK_SECRET_KEY in backend/.env. Internal AdeTech transfers remain available.'
+        });
+      }
+
+      const resolved = await paystackService.resolveAccountNumber(cleanAccount, resolvedBankCode);
+      finalBeneficiaryName = resolved.accountName;
+
+      const recipient = await paystackService.createTransferRecipient({
+        name: finalBeneficiaryName,
+        accountNumber: cleanAccount,
+        bankCode: resolvedBankCode
+      });
+
+      const referencePreview = `ADT-TX-${Date.now().toString().slice(-8)}`;
+      const payout = await paystackService.initiateTransfer({
+        amountNaira: transferAmount,
+        recipientCode: recipient.recipientCode,
+        reason: narration || `AdeTech transfer to ${finalBeneficiaryName}`,
+        reference: referencePreview
+      });
+
+      if (payout.status === 'otp') {
+        throw new Error(
+          'Paystack Transfer OTP is enabled on this merchant. Disable Transfer OTP under Paystack Dashboard → Settings → Preferences, then retry. Your AdeTech balance has not been debited.'
+        );
+      }
+
+      if (payout.status === 'failed' || payout.status === 'reversed') {
+        throw new Error(`Paystack declined the payout (${payout.status}). Your AdeTech balance has not been debited.`);
+      }
+
+      paystackMeta = {
+        recipientCode: recipient.recipientCode,
+        transferCode: payout.transferCode,
+        providerStatus: payout.status,
+        providerReference: payout.reference,
+        providerId: payout.id
+      };
+    }
+
     const newSenderBalance = senderAccount.balance - totalRequired;
     db.updateAccountBalance(senderAccount.id, newSenderBalance);
 
-    const reference = `ADT-TX-${Date.now().toString().slice(-8)}`;
-    const finalBeneficiaryName = recipientName || (isInternal ? 'AdeTech Customer' : 'Verified Beneficiary');
+    const reference = paystackMeta?.providerReference || `ADT-TX-${Date.now().toString().slice(-8)}`;
+    const railStatus = paystackMeta?.providerStatus;
+    const txnStatus =
+      !isInternal && railStatus && railStatus !== 'success' && railStatus !== 'otp'
+        ? 'pending'
+        : 'completed';
 
-    if (isInternal) {
-      const recipientAccount = db.findAccountByNumber(cleanAccount);
-      if (recipientAccount) {
-        const newRecipientBalance = recipientAccount.balance + transferAmount;
-        db.updateAccountBalance(recipientAccount.id, newRecipientBalance);
+    if (isInternal && recipientAccount) {
+      const newRecipientBalance = recipientAccount.balance + transferAmount;
+      db.updateAccountBalance(recipientAccount.id, newRecipientBalance);
 
-        db.addTransaction({
-          id: `txn_${Date.now()}_cr`,
-          userId: recipientAccount.userId,
-          type: 'credit',
-          amount: transferAmount,
-          fee: 0.00,
-          currency: 'NGN',
-          category: 'Inward Wire Transfer',
-          senderName: user.name,
-          reference,
-          status: 'completed',
-          date: new Date().toISOString(),
-          description: narration || `Transfer from ${user.name}`
-        });
-      }
+      db.addTransaction({
+        id: `txn_${Date.now()}_cr`,
+        userId: recipientAccount.userId,
+        type: 'credit',
+        amount: transferAmount,
+        fee: 0.00,
+        currency: 'NGN',
+        category: 'Inward Wire Transfer',
+        senderName: user.name,
+        senderAccountNumber: senderAccount.accountNumber,
+        reference,
+        status: 'completed',
+        date: new Date().toISOString(),
+        description: narration || `Transfer from ${user.name}`,
+        channel: 'AdeTech Core Ledger'
+      });
     }
 
     const senderTxn = {
@@ -437,13 +541,15 @@ router.post('/transfer', protect, async (req, res) => {
       currency: 'NGN',
       category: isInternal ? 'Internal Transfer' : 'Inter-Bank Transfer',
       recipientName: finalBeneficiaryName,
-      recipientBank,
+      recipientBank: cleanBank,
       recipientAccountNumber: cleanAccount,
+      recipientBankCode: isInternal ? '090' : resolvedBankCode,
       reference,
-      status: 'completed',
+      status: txnStatus,
       date: new Date().toISOString(),
       description: narration || `Transfer to ${finalBeneficiaryName}`,
-      channel: isInternal ? 'AdeTech Core Ledger' : 'Paystack Electronic Settlement Rail',
+      channel: isInternal ? 'AdeTech Core Ledger' : 'Paystack Transfer API',
+      paystack: paystackMeta,
       idempotencyKey: idempotencyKey || null
     };
 
@@ -454,21 +560,42 @@ router.post('/transfer', protect, async (req, res) => {
       transferOTPExpiresAt: null
     });
 
+    db.addNotification({
+      id: `notif_${Date.now()}`,
+      userId: user.id,
+      title: txnStatus === 'completed' ? 'Transfer Sent' : 'Transfer Pending',
+      message: `₦${transferAmount.toLocaleString('en-NG', { minimumFractionDigits: 2 })} to ${finalBeneficiaryName} (${cleanBank}). Ref: ${reference}`,
+      time: 'Just now',
+      isRead: false
+    });
+
     emailService.sendTransactionAlert(user.email, user.name, senderTxn).catch((err) => {
       console.error('Error dispatching transaction alert email:', err.message);
     });
 
     return res.status(200).json({
       success: true,
-      message: `Transfer of ₦${transferAmount.toLocaleString('en-NG', { minimumFractionDigits: 2 })} completed successfully.`,
+      message:
+        txnStatus === 'pending'
+          ? `Transfer of ₦${transferAmount.toLocaleString('en-NG', { minimumFractionDigits: 2 })} submitted to Paystack and is pending settlement.`
+          : `Transfer of ₦${transferAmount.toLocaleString('en-NG', { minimumFractionDigits: 2 })} completed successfully.`,
       transaction: senderTxn,
       newBalance: newSenderBalance
     });
   } catch (err) {
     console.error('Transfer processing error:', err);
-    return res.status(500).json({
+
+    if (err.code === 'PAYSTACK_KEY_MISSING' || err.code === 'PAYSTACK_AUTH_FAILED') {
+      return res.status(err.code === 'PAYSTACK_AUTH_FAILED' ? 401 : 503).json({
+        success: false,
+        code: err.code,
+        message: err.message
+      });
+    }
+
+    return res.status(400).json({
       success: false,
-      message: 'Server error processing transfer. Your account balance remains unchanged.'
+      message: err.message || 'Transfer failed on the settlement rail. Your account balance remains unchanged.'
     });
   }
 });
@@ -525,6 +652,21 @@ router.post('/pay-bill', protect, (req, res) => {
       message: 'Server error processing bill payment.'
     });
   }
+});
+
+router.get('/:id', protect, (req, res) => {
+  const transaction = db.getTransactionById(req.params.id, req.user.id);
+  if (!transaction) {
+    return res.status(404).json({
+      success: false,
+      message: 'Transaction not found on this account.'
+    });
+  }
+
+  return res.json({
+    success: true,
+    transaction
+  });
 });
 
 export default router;

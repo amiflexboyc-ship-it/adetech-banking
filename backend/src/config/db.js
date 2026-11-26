@@ -146,6 +146,35 @@ const getInitialData = () => {
 class Database {
   constructor() {
     this.data = this.load();
+    this.ensureDemoBeneficiary();
+  }
+
+  ensureDemoBeneficiary() {
+    if (this.findAccountByNumber('0123456789')) return;
+
+    const salt = bcrypt.genSaltSync(10);
+    this.addUser({
+      id: 'usr_demo_beneficiary',
+      name: 'AdeTech Demo Beneficiary',
+      email: 'beneficiary@adetech.bank',
+      phone: '08000000000',
+      password: bcrypt.hashSync('AdeTech@2026', salt),
+      transactionPin: bcrypt.hashSync('1234', salt),
+      tier: 'Tier 1',
+      bvnVerified: true,
+      ninVerified: true,
+      createdAt: new Date().toISOString()
+    });
+    this.addAccount({
+      id: 'acc_demo_beneficiary',
+      userId: 'usr_demo_beneficiary',
+      accountNumber: '0123456789',
+      accountType: 'Personal Checking',
+      currency: 'NGN',
+      balance: 25000.00,
+      ledgerBalance: 25000.00,
+      dailyLimit: 500000.00
+    });
   }
 
   load() {
@@ -237,6 +266,20 @@ class Database {
     this.data.transactions.unshift(txn);
     this.save();
     return txn;
+  }
+
+  getTransactionById(id, userId) {
+    return this.data.transactions.find(
+      (t) =>
+        t.userId === userId &&
+        (t.id === id || t.reference === id)
+    );
+  }
+
+  addNotification(notification) {
+    this.data.notifications.unshift(notification);
+    this.save();
+    return notification;
   }
 
   getNotificationsByUserId(userId) {

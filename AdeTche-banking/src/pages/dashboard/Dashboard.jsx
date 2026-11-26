@@ -258,62 +258,9 @@ function Dashboard() {
                   );
                 })
               ) : (
-                <>
-
-                  <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 flex items-center justify-center">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">Chevron Nigeria Treasury</div>
-                        <div className="text-[10px] text-slate-400">Direct NIP Wire Settlement</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs font-bold text-emerald-400 font-mono">+₦250,000.00</div>
-                      <div className="text-[10px] text-slate-400">Completed</div>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 flex items-center justify-center">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">Ikeja Electric (IKEDC)</div>
-                        <div className="text-[10px] text-slate-400">Prepaid Utility Token</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs font-bold text-slate-200 font-mono">-₦45,000.00</div>
-                      <div className="text-[10px] text-slate-400">Completed</div>
-                    </div>
-                  </div>
-
-                  <div className="p-3.5 rounded-2xl bg-[#071527] border border-blue-900/60 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-400 flex items-center justify-center">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-white">MTN Broadband Top-Up</div>
-                        <div className="text-[10px] text-slate-400">High-Speed Data Bundle</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-xs font-bold text-slate-200 font-mono">-₦12,500.00</div>
-                      <div className="text-[10px] text-slate-400">Completed</div>
-                    </div>
-                  </div>
-                </>
+                <div className="p-6 rounded-2xl bg-[#071527] border border-blue-900/60 text-center text-xs text-slate-400">
+                  No recent activity yet. Transfers and bill payments will appear here with downloadable receipts.
+                </div>
               )}
             </div>
           </div>

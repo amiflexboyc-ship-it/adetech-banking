@@ -284,6 +284,87 @@ class PaystackService {
     }
   }
 
+  async createTransferRecipient({ name, accountNumber, bankCode }) {
+    if (!this.hasSecretKey()) {
+      const error = new Error(
+        'Live inter-bank transfer requires PAYSTACK_SECRET_KEY in backend/.env.'
+      );
+      error.code = 'PAYSTACK_KEY_MISSING';
+      throw error;
+    }
+
+    const response = await this.makeHttpsRequest(
+      'api.paystack.co',
+      '/transferrecipient',
+      'POST',
+      {
+        type: 'nuban',
+        name,
+        account_number: String(accountNumber).trim(),
+        bank_code: String(bankCode).trim(),
+        currency: 'NGN'
+      },
+      true,
+      this.getSecretKey()
+    );
+
+    if (!response?.status || !response.data?.recipient_code) {
+      throw new Error(response?.message || 'Could not create a Paystack transfer recipient for this NUBAN.');
+    }
+
+    return {
+      recipientCode: response.data.recipient_code,
+      accountName: (response.data.name || response.data.details?.account_name || name).toString().trim().toUpperCase(),
+      accountNumber: response.data.details?.account_number || accountNumber,
+      bankCode: response.data.details?.bank_code || bankCode,
+      bankName: response.data.details?.bank_name || ''
+    };
+  }
+
+  async initiateTransfer({ amountNaira, recipientCode, reason, reference }) {
+    if (!this.hasSecretKey()) {
+      const error = new Error(
+        'Live inter-bank transfer requires PAYSTACK_SECRET_KEY in backend/.env.'
+      );
+      error.code = 'PAYSTACK_KEY_MISSING';
+      throw error;
+    }
+
+    const amountKobo = Math.round(Number(amountNaira) * 100);
+    if (!amountKobo || amountKobo < 10000) {
+      throw new Error('Paystack transfers require a minimum of ₦100.00.');
+    }
+
+    const response = await this.makeHttpsRequest(
+      'api.paystack.co',
+      '/transfer',
+      'POST',
+      {
+        source: 'balance',
+        amount: amountKobo,
+        recipient: recipientCode,
+        reason: reason || 'AdeTech Instant Transfer',
+        reference
+      },
+      true,
+      this.getSecretKey()
+    );
+
+    if (!response?.status || !response.data) {
+      const err = new Error(response?.message || 'Paystack could not initiate the transfer.');
+      err.code = 'PAYSTACK_TRANSFER_FAILED';
+      throw err;
+    }
+
+    return {
+      transferCode: response.data.transfer_code,
+      status: response.data.status,
+      reference: response.data.reference || reference,
+      amountKobo: response.data.amount,
+      id: response.data.id
+    };
+  }
+
   makeHttpsRequest(hostname, path, method = 'GET', body = null, requireAuth = false, secretKey = '') {
     return new Promise((resolve, reject) => {
       const headers = {
@@ -308,7 +389,7 @@ class PaystackService {
         path,
         method,
         headers,
-        timeout: 10000
+        timeout: 20000
       };
 
       const req = https.request(options, (res) => {
